@@ -1,0 +1,1 @@
+{"schema_version":"1.0","error_id":"err-000001","run_id":"run-smoke","episode_id":"ep-rule-conv-v1-mock-lateral-eval-01-s2001","step":5,"component":"coordinator","code":"SCHEMA_INVALID","severity":"warning","recoverable":true,"message":"Proposal rejected, not parseable as a PolicyProposal","proposal_id":null,"validation_id":null,"execution_id":null,"node_id":null}

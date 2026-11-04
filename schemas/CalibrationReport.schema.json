@@ -1,0 +1,294 @@
+{
+  "$defs": {
+    "CalibrationStatus": {
+      "description": "Status of the held-out calibration check.",
+      "enum": [
+        "ok",
+        "insufficient_data",
+        "not_informative"
+      ],
+      "title": "CalibrationStatus",
+      "type": "string"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "description": "Where a measured or compared record's values came from.",
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/ProvenanceKind"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9 .,()_-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "ProvenanceKind": {
+      "description": "Where a record's values came from.",
+      "enum": [
+        "fixture_synthetic",
+        "mock_simulator_run",
+        "simulator_run"
+      ],
+      "title": "ProvenanceKind",
+      "type": "string"
+    },
+    "ReliabilityBin": {
+      "additionalProperties": false,
+      "description": "One confidence bin of the reliability diagram.",
+      "properties": {
+        "accuracy": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Accuracy"
+        },
+        "lower": {
+          "title": "Lower",
+          "type": "number"
+        },
+        "mean_confidence": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mean Confidence"
+        },
+        "n": {
+          "minimum": 0,
+          "title": "N",
+          "type": "integer"
+        },
+        "upper": {
+          "title": "Upper",
+          "type": "number"
+        }
+      },
+      "required": [
+        "lower",
+        "upper",
+        "n"
+      ],
+      "title": "ReliabilityBin",
+      "type": "object"
+    },
+    "ThresholdSelection": {
+      "description": "Whether thresholds are defaults or selected on the calibration split.",
+      "enum": [
+        "default",
+        "selected_on_cal"
+      ],
+      "title": "ThresholdSelection",
+      "type": "string"
+    }
+  },
+  "$id": "urn:cyberswarm:schema:CalibrationReport:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Held-out calibration check of the uncertainty signal (CONTRACTS 11.7).",
+  "properties": {
+    "auroc": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Auroc"
+    },
+    "auroc_ci_high": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Auroc Ci High"
+    },
+    "auroc_ci_low": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Auroc Ci Low"
+    },
+    "bins": {
+      "items": {
+        "$ref": "#/$defs/ReliabilityBin"
+      },
+      "title": "Bins",
+      "type": "array"
+    },
+    "brier": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Brier"
+    },
+    "cal_split": {
+      "const": "cal",
+      "default": "cal",
+      "title": "Cal Split",
+      "type": "string"
+    },
+    "ece_calibrated": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Ece Calibrated"
+    },
+    "ece_raw": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Ece Raw"
+    },
+    "eval_split": {
+      "enum": [
+        "eval",
+        "eval_utopo"
+      ],
+      "title": "Eval Split",
+      "type": "string"
+    },
+    "mce": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Mce"
+    },
+    "n_cal": {
+      "minimum": 0,
+      "title": "N Cal",
+      "type": "integer"
+    },
+    "n_eval": {
+      "minimum": 0,
+      "title": "N Eval",
+      "type": "integer"
+    },
+    "policy_id": {
+      "pattern": "^pol-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Policy Id",
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "report_id": {
+      "pattern": "^cbr-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Report Id",
+      "type": "string"
+    },
+    "run_id": {
+      "pattern": "^run-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/CalibrationStatus"
+    },
+    "tau_defer": {
+      "maximum": 1.01,
+      "minimum": 0.0,
+      "title": "Tau Defer",
+      "type": "number"
+    },
+    "tau_evidence": {
+      "maximum": 1.01,
+      "minimum": 0.0,
+      "title": "Tau Evidence",
+      "type": "number"
+    },
+    "threshold_selection": {
+      "$ref": "#/$defs/ThresholdSelection"
+    }
+  },
+  "required": [
+    "report_id",
+    "run_id",
+    "policy_id",
+    "eval_split",
+    "n_cal",
+    "n_eval",
+    "status",
+    "tau_evidence",
+    "tau_defer",
+    "threshold_selection",
+    "provenance"
+  ],
+  "title": "CalibrationReport",
+  "type": "object"
+}

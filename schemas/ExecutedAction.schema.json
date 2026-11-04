@@ -1,0 +1,281 @@
+{
+  "$defs": {
+    "ActionKind": {
+      "description": "The eight abstract defensive actions (CONTRACTS section 6).",
+      "enum": [
+        "no_op",
+        "monitor_node",
+        "investigate_node",
+        "request_evidence",
+        "rate_limit_node",
+        "quarantine_node",
+        "isolate_node",
+        "restore_node"
+      ],
+      "title": "ActionKind",
+      "type": "string"
+    },
+    "ActionParameters": {
+      "additionalProperties": false,
+      "description": "Action parameters; ``{}`` means defaults (CONTRACTS section 6).",
+      "properties": {
+        "duration_steps": {
+          "anyOf": [
+            {
+              "maximum": 5,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Duration Steps"
+        },
+        "level": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RateLimitLevel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "ActionParameters",
+      "type": "object"
+    },
+    "ActionSpec": {
+      "additionalProperties": false,
+      "description": "A fully specified abstract action (CONTRACTS section 6).",
+      "properties": {
+        "action_kind": {
+          "$ref": "#/$defs/ActionKind"
+        },
+        "parameters": {
+          "$ref": "#/$defs/ActionParameters"
+        },
+        "target_node_id": {
+          "anyOf": [
+            {
+              "maxLength": 40,
+              "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Node Id"
+        }
+      },
+      "required": [
+        "action_kind"
+      ],
+      "title": "ActionSpec",
+      "type": "object"
+    },
+    "ErrorCode": {
+      "description": "Structured error codes (CONTRACTS section 11.4).",
+      "enum": [
+        "SCHEMA_INVALID",
+        "SCHEMA_VERSION_MISMATCH",
+        "UNKNOWN_ID",
+        "SCENARIO_UNSUPPORTED",
+        "SIMULATOR_FAILURE",
+        "ACTION_EXECUTION_FAILED",
+        "POLICY_FAILURE",
+        "UNCERTAINTY_UNAVAILABLE",
+        "CHECKPOINT_ERROR",
+        "CONFIG_INVALID",
+        "IO_ERROR",
+        "LEAKAGE_DETECTED",
+        "INVARIANT_VIOLATION"
+      ],
+      "title": "ErrorCode",
+      "type": "string"
+    },
+    "ExecutionStatus": {
+      "description": "Whether an accepted action executed or failed (state then unchanged).",
+      "enum": [
+        "executed",
+        "failed"
+      ],
+      "title": "ExecutionStatus",
+      "type": "string"
+    },
+    "NodeStatus": {
+      "description": "Agent-visible node status; follows from actions, not a compromise flag.",
+      "enum": [
+        "up",
+        "rate_limited",
+        "quarantined",
+        "isolated",
+        "restoring"
+      ],
+      "title": "NodeStatus",
+      "type": "string"
+    },
+    "RateLimitLevel": {
+      "description": "Allowed ``level`` parameter of ``rate_limit_node``.",
+      "enum": [
+        "light",
+        "heavy"
+      ],
+      "title": "RateLimitLevel",
+      "type": "string"
+    },
+    "StatusChange": {
+      "additionalProperties": false,
+      "description": "A visible node status transition caused by an execution.",
+      "properties": {
+        "node_id": {
+          "maxLength": 40,
+          "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "title": "Node Id",
+          "type": "string"
+        },
+        "status_from": {
+          "$ref": "#/$defs/NodeStatus"
+        },
+        "status_to": {
+          "$ref": "#/$defs/NodeStatus"
+        }
+      },
+      "required": [
+        "node_id",
+        "status_from",
+        "status_to"
+      ],
+      "title": "StatusChange",
+      "type": "object"
+    }
+  },
+  "$id": "urn:cyberswarm:schema:ExecutedAction:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "One accepted action as executed by the simulator (CONTRACTS section 8.7).",
+  "properties": {
+    "action": {
+      "$ref": "#/$defs/ActionSpec"
+    },
+    "affected_node_ids": {
+      "items": {
+        "maxLength": 40,
+        "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+        "type": "string"
+      },
+      "title": "Affected Node Ids",
+      "type": "array"
+    },
+    "agent_id": {
+      "pattern": "^agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Agent Id",
+      "type": "string"
+    },
+    "episode_id": {
+      "maxLength": 120,
+      "pattern": "^ep-[a-z0-9]+(?:-[a-z0-9]+)*-s[0-9]+$",
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "error_code": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ErrorCode"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "execution_id": {
+      "pattern": "^exe-[0-9]{6}$",
+      "title": "Execution Id",
+      "type": "string"
+    },
+    "outcome_event_ids": {
+      "items": {
+        "pattern": "^(?:evt|cev)-[0-9]{6}$",
+        "type": "string"
+      },
+      "title": "Outcome Event Ids",
+      "type": "array"
+    },
+    "proposal_id": {
+      "pattern": "^prop-[0-9]{6}$",
+      "title": "Proposal Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "state_digest_after": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "State Digest After"
+    },
+    "state_digest_before": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "State Digest Before"
+    },
+    "status": {
+      "$ref": "#/$defs/ExecutionStatus"
+    },
+    "status_changes": {
+      "items": {
+        "$ref": "#/$defs/StatusChange"
+      },
+      "title": "Status Changes",
+      "type": "array"
+    },
+    "step": {
+      "maximum": 10000,
+      "minimum": 0,
+      "title": "Step",
+      "type": "integer"
+    },
+    "validation_id": {
+      "pattern": "^val-[0-9]{6}$",
+      "title": "Validation Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "execution_id",
+    "episode_id",
+    "step",
+    "proposal_id",
+    "validation_id",
+    "agent_id",
+    "action",
+    "status",
+    "error_code"
+  ],
+  "title": "ExecutedAction",
+  "type": "object"
+}

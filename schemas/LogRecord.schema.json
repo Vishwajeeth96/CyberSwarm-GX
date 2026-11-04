@@ -1,0 +1,146 @@
+{
+  "$defs": {
+    "Component": {
+      "description": "Which component produced an error or log line (CONTRACTS section 11.4).",
+      "enum": [
+        "contracts",
+        "simulator",
+        "mock",
+        "roles",
+        "graph",
+        "engine",
+        "coordinator",
+        "rl_env",
+        "baseline",
+        "marl",
+        "uncertainty",
+        "gnn",
+        "evaluation",
+        "runner",
+        "config"
+      ],
+      "title": "Component",
+      "type": "string"
+    },
+    "ErrorCode": {
+      "description": "Structured error codes (CONTRACTS section 11.4).",
+      "enum": [
+        "SCHEMA_INVALID",
+        "SCHEMA_VERSION_MISMATCH",
+        "UNKNOWN_ID",
+        "SCENARIO_UNSUPPORTED",
+        "SIMULATOR_FAILURE",
+        "ACTION_EXECUTION_FAILED",
+        "POLICY_FAILURE",
+        "UNCERTAINTY_UNAVAILABLE",
+        "CHECKPOINT_ERROR",
+        "CONFIG_INVALID",
+        "IO_ERROR",
+        "LEAKAGE_DETECTED",
+        "INVARIANT_VIOLATION"
+      ],
+      "title": "ErrorCode",
+      "type": "string"
+    },
+    "LogLevel": {
+      "description": "Log level of a log record.",
+      "enum": [
+        "debug",
+        "info",
+        "warning",
+        "error"
+      ],
+      "title": "LogLevel",
+      "type": "string"
+    }
+  },
+  "$id": "urn:cyberswarm:schema:LogRecord:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "One JSON log line; ``ts`` is the only wall-clock value in the system.",
+  "properties": {
+    "code": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ErrorCode"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "component": {
+      "$ref": "#/$defs/Component"
+    },
+    "episode_id": {
+      "anyOf": [
+        {
+          "maxLength": 120,
+          "pattern": "^ep-[a-z0-9]+(?:-[a-z0-9]+)*-s[0-9]+$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Episode Id"
+    },
+    "level": {
+      "$ref": "#/$defs/LogLevel"
+    },
+    "message": {
+      "maxLength": 160,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9 .,()_-]+$",
+      "title": "Message",
+      "type": "string"
+    },
+    "run_id": {
+      "anyOf": [
+        {
+          "pattern": "^run-[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Run Id"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "step": {
+      "anyOf": [
+        {
+          "maximum": 10000,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Step"
+    },
+    "ts": {
+      "title": "Ts",
+      "type": "string"
+    }
+  },
+  "required": [
+    "ts",
+    "level",
+    "component",
+    "message"
+  ],
+  "title": "LogRecord",
+  "type": "object"
+}

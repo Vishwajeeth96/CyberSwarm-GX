@@ -1,0 +1,92 @@
+{
+  "$defs": {
+    "ActionKind": {
+      "description": "The eight abstract defensive actions (CONTRACTS section 6).",
+      "enum": [
+        "no_op",
+        "monitor_node",
+        "investigate_node",
+        "request_evidence",
+        "rate_limit_node",
+        "quarantine_node",
+        "isolate_node",
+        "restore_node"
+      ],
+      "title": "ActionKind",
+      "type": "string"
+    },
+    "ActionParameters": {
+      "additionalProperties": false,
+      "description": "Action parameters; ``{}`` means defaults (CONTRACTS section 6).",
+      "properties": {
+        "duration_steps": {
+          "anyOf": [
+            {
+              "maximum": 5,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Duration Steps"
+        },
+        "level": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RateLimitLevel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "ActionParameters",
+      "type": "object"
+    },
+    "RateLimitLevel": {
+      "description": "Allowed ``level`` parameter of ``rate_limit_node``.",
+      "enum": [
+        "light",
+        "heavy"
+      ],
+      "title": "RateLimitLevel",
+      "type": "string"
+    }
+  },
+  "$id": "urn:cyberswarm:schema:ActionSpec:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "A fully specified abstract action (CONTRACTS section 6).",
+  "properties": {
+    "action_kind": {
+      "$ref": "#/$defs/ActionKind"
+    },
+    "parameters": {
+      "$ref": "#/$defs/ActionParameters"
+    },
+    "target_node_id": {
+      "anyOf": [
+        {
+          "maxLength": 40,
+          "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Target Node Id"
+    }
+  },
+  "required": [
+    "action_kind"
+  ],
+  "title": "ActionSpec",
+  "type": "object"
+}

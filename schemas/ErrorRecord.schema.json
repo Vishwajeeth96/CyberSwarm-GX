@@ -1,0 +1,197 @@
+{
+  "$defs": {
+    "Component": {
+      "description": "Which component produced an error or log line (CONTRACTS section 11.4).",
+      "enum": [
+        "contracts",
+        "simulator",
+        "mock",
+        "roles",
+        "graph",
+        "engine",
+        "coordinator",
+        "rl_env",
+        "baseline",
+        "marl",
+        "uncertainty",
+        "gnn",
+        "evaluation",
+        "runner",
+        "config"
+      ],
+      "title": "Component",
+      "type": "string"
+    },
+    "ErrorCode": {
+      "description": "Structured error codes (CONTRACTS section 11.4).",
+      "enum": [
+        "SCHEMA_INVALID",
+        "SCHEMA_VERSION_MISMATCH",
+        "UNKNOWN_ID",
+        "SCENARIO_UNSUPPORTED",
+        "SIMULATOR_FAILURE",
+        "ACTION_EXECUTION_FAILED",
+        "POLICY_FAILURE",
+        "UNCERTAINTY_UNAVAILABLE",
+        "CHECKPOINT_ERROR",
+        "CONFIG_INVALID",
+        "IO_ERROR",
+        "LEAKAGE_DETECTED",
+        "INVARIANT_VIOLATION"
+      ],
+      "title": "ErrorCode",
+      "type": "string"
+    },
+    "ErrorSeverity": {
+      "description": "Severity of an error record.",
+      "enum": [
+        "warning",
+        "error",
+        "fatal"
+      ],
+      "title": "ErrorSeverity",
+      "type": "string"
+    }
+  },
+  "$id": "urn:cyberswarm:schema:ErrorRecord:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "A structured error (CONTRACTS section 11.4).",
+  "properties": {
+    "code": {
+      "$ref": "#/$defs/ErrorCode"
+    },
+    "component": {
+      "$ref": "#/$defs/Component"
+    },
+    "episode_id": {
+      "anyOf": [
+        {
+          "maxLength": 120,
+          "pattern": "^ep-[a-z0-9]+(?:-[a-z0-9]+)*-s[0-9]+$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Episode Id"
+    },
+    "error_id": {
+      "pattern": "^err-[0-9]{6}$",
+      "title": "Error Id",
+      "type": "string"
+    },
+    "execution_id": {
+      "anyOf": [
+        {
+          "pattern": "^exe-[0-9]{6}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Execution Id"
+    },
+    "message": {
+      "maxLength": 160,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9 .,()_-]+$",
+      "title": "Message",
+      "type": "string"
+    },
+    "node_id": {
+      "anyOf": [
+        {
+          "maxLength": 40,
+          "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Node Id"
+    },
+    "proposal_id": {
+      "anyOf": [
+        {
+          "pattern": "^prop-[0-9]{6}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Proposal Id"
+    },
+    "recoverable": {
+      "title": "Recoverable",
+      "type": "boolean"
+    },
+    "run_id": {
+      "anyOf": [
+        {
+          "pattern": "^run-[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Run Id"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "severity": {
+      "$ref": "#/$defs/ErrorSeverity"
+    },
+    "step": {
+      "anyOf": [
+        {
+          "maximum": 10000,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Step"
+    },
+    "validation_id": {
+      "anyOf": [
+        {
+          "pattern": "^val-[0-9]{6}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Validation Id"
+    }
+  },
+  "required": [
+    "error_id",
+    "component",
+    "code",
+    "severity",
+    "recoverable",
+    "message"
+  ],
+  "title": "ErrorRecord",
+  "type": "object"
+}

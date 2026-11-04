@@ -1,0 +1,186 @@
+{
+  "$id": "urn:cyberswarm:schema:GraphSnapshot:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Deterministic per-agent, per-step graph matrices (CONTRACTS section 10.1).",
+  "properties": {
+    "agent_id": {
+      "pattern": "^agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Agent Id",
+      "type": "string"
+    },
+    "converter": {
+      "maxLength": 160,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9 .,()_-]+$",
+      "title": "Converter",
+      "type": "string"
+    },
+    "dtype": {
+      "const": "float32",
+      "default": "float32",
+      "title": "Dtype",
+      "type": "string"
+    },
+    "edge_feature_names": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Edge Feature Names",
+      "type": "array"
+    },
+    "edge_features": {
+      "items": {
+        "items": {
+          "type": "number"
+        },
+        "type": "array"
+      },
+      "title": "Edge Features",
+      "type": "array"
+    },
+    "edge_index": {
+      "items": {
+        "items": {
+          "type": "integer"
+        },
+        "type": "array"
+      },
+      "title": "Edge Index",
+      "type": "array"
+    },
+    "edge_mask": {
+      "items": {
+        "items": {
+          "type": "integer"
+        },
+        "type": "array"
+      },
+      "title": "Edge Mask",
+      "type": "array"
+    },
+    "edge_order": {
+      "items": {
+        "pattern": "^edge-[0-9]{3,4}$",
+        "type": "string"
+      },
+      "title": "Edge Order",
+      "type": "array"
+    },
+    "episode_id": {
+      "maxLength": 120,
+      "pattern": "^ep-[a-z0-9]+(?:-[a-z0-9]+)*-s[0-9]+$",
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "feature_set_id": {
+      "const": "graph-base-v1",
+      "default": "graph-base-v1",
+      "title": "Feature Set Id",
+      "type": "string"
+    },
+    "imputation_policy_id": {
+      "const": "impute-v1",
+      "default": "impute-v1",
+      "title": "Imputation Policy Id",
+      "type": "string"
+    },
+    "max_event_step": {
+      "anyOf": [
+        {
+          "maximum": 10000,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Max Event Step"
+    },
+    "node_feature_names": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Node Feature Names",
+      "type": "array"
+    },
+    "node_features": {
+      "items": {
+        "items": {
+          "type": "number"
+        },
+        "type": "array"
+      },
+      "title": "Node Features",
+      "type": "array"
+    },
+    "node_mask": {
+      "items": {
+        "items": {
+          "type": "integer"
+        },
+        "type": "array"
+      },
+      "title": "Node Mask",
+      "type": "array"
+    },
+    "node_order": {
+      "items": {
+        "maxLength": 40,
+        "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+        "type": "string"
+      },
+      "title": "Node Order",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "snapshot_id": {
+      "pattern": "^gsn-[0-9]{4}-agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Snapshot Id",
+      "type": "string"
+    },
+    "source_observation_id": {
+      "pattern": "^obs-[0-9]{4}-agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Source Observation Id",
+      "type": "string"
+    },
+    "step": {
+      "maximum": 10000,
+      "minimum": 0,
+      "title": "Step",
+      "type": "integer"
+    },
+    "topology_id": {
+      "pattern": "^topo-[a-z0-9]+(?:-[a-z0-9]+)*-v[0-9]+$",
+      "title": "Topology Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "snapshot_id",
+    "episode_id",
+    "step",
+    "agent_id",
+    "topology_id",
+    "node_order",
+    "edge_order",
+    "edge_index",
+    "node_feature_names",
+    "node_features",
+    "node_mask",
+    "edge_feature_names",
+    "edge_features",
+    "edge_mask",
+    "source_observation_id",
+    "converter"
+  ],
+  "title": "GraphSnapshot",
+  "type": "object"
+}

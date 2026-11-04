@@ -1,0 +1,22 @@
+# Python virtual environment
+.venv/
+
+# Python caches and bytecode
+__pycache__/
+.pytest_cache/
+
+# Experiment outputs and artifacts
+runs/
+checkpoints/
+logs/
+*.log
+*.pt
+
+# Datasets (kept out of git)
+datasets/
+
+# Node tooling
+node_modules/
+
+# Secrets / local environment
+.env

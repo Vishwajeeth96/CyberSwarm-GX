@@ -1,0 +1,590 @@
+{
+  "$defs": {
+    "ActionKind": {
+      "description": "The eight abstract defensive actions (CONTRACTS section 6).",
+      "enum": [
+        "no_op",
+        "monitor_node",
+        "investigate_node",
+        "request_evidence",
+        "rate_limit_node",
+        "quarantine_node",
+        "isolate_node",
+        "restore_node"
+      ],
+      "title": "ActionKind",
+      "type": "string"
+    },
+    "AlertCategory": {
+      "description": "Abstract alert class; no technique names.",
+      "enum": [
+        "traffic_anomaly",
+        "access_anomaly",
+        "service_anomaly"
+      ],
+      "title": "AlertCategory",
+      "type": "string"
+    },
+    "Decision": {
+      "description": "Coordinator decision on a proposal. There is no third state.",
+      "enum": [
+        "accepted",
+        "rejected"
+      ],
+      "title": "Decision",
+      "type": "string"
+    },
+    "EdgeObservation": {
+      "additionalProperties": false,
+      "description": "One edge as an agent sees it (CONTRACTS section 8.2).",
+      "properties": {
+        "edge_id": {
+          "pattern": "^edge-[0-9]{3,4}$",
+          "title": "Edge Id",
+          "type": "string"
+        },
+        "edge_state": {
+          "$ref": "#/$defs/EdgeState"
+        },
+        "traffic_level": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Traffic Level"
+        }
+      },
+      "required": [
+        "edge_id",
+        "edge_state"
+      ],
+      "title": "EdgeObservation",
+      "type": "object"
+    },
+    "EdgeState": {
+      "description": "Agent-visible edge state.",
+      "enum": [
+        "active",
+        "limited",
+        "blocked"
+      ],
+      "title": "EdgeState",
+      "type": "string"
+    },
+    "EventProducer": {
+      "description": "Who produced the event.",
+      "enum": [
+        "simulator",
+        "coordinator"
+      ],
+      "title": "EventProducer",
+      "type": "string"
+    },
+    "EventRecord": {
+      "additionalProperties": false,
+      "description": "One agent-visible event (CONTRACTS section 8.1).",
+      "properties": {
+        "action_kind": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ActionKind"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "agent_id": {
+          "anyOf": [
+            {
+              "pattern": "^agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Agent Id"
+        },
+        "alert_category": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AlertCategory"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "episode_id": {
+          "maxLength": 120,
+          "pattern": "^ep-[a-z0-9]+(?:-[a-z0-9]+)*-s[0-9]+$",
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "event_id": {
+          "pattern": "^(?:evt|cev)-[0-9]{6}$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "event_type": {
+          "$ref": "#/$defs/EventType"
+        },
+        "evidence_level": {
+          "anyOf": [
+            {
+              "maximum": 3,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evidence Level"
+        },
+        "execution_id": {
+          "anyOf": [
+            {
+              "pattern": "^exe-[0-9]{6}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Execution Id"
+        },
+        "node_id": {
+          "anyOf": [
+            {
+              "maxLength": 40,
+              "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Node Id"
+        },
+        "phase": {
+          "$ref": "#/$defs/Phase"
+        },
+        "producer": {
+          "$ref": "#/$defs/EventProducer"
+        },
+        "proposal_id": {
+          "anyOf": [
+            {
+              "pattern": "^prop-[0-9]{6}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Proposal Id"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "severity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Severity"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "status_from": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/NodeStatus"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "status_to": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/NodeStatus"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "step": {
+          "maximum": 10000,
+          "minimum": 0,
+          "title": "Step",
+          "type": "integer"
+        },
+        "terminated": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Terminated"
+        },
+        "truncated": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Truncated"
+        },
+        "visible_to": {
+          "items": {
+            "pattern": "^agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "type": "string"
+          },
+          "title": "Visible To",
+          "type": "array"
+        }
+      },
+      "required": [
+        "event_id",
+        "episode_id",
+        "step",
+        "phase",
+        "event_type",
+        "producer",
+        "visible_to"
+      ],
+      "title": "EventRecord",
+      "type": "object"
+    },
+    "EventType": {
+      "description": "Closed set of agent-visible event types (CONTRACTS section 8.1).",
+      "enum": [
+        "episode_started",
+        "alert_raised",
+        "restore_completed",
+        "node_status_changed",
+        "action_applied",
+        "investigation_result",
+        "recovery_verified",
+        "recovery_failed",
+        "episode_ended"
+      ],
+      "title": "EventType",
+      "type": "string"
+    },
+    "ExecutionStatus": {
+      "description": "Whether an accepted action executed or failed (state then unchanged).",
+      "enum": [
+        "executed",
+        "failed"
+      ],
+      "title": "ExecutionStatus",
+      "type": "string"
+    },
+    "NodeObservation": {
+      "additionalProperties": false,
+      "description": "One node as an agent sees it (CONTRACTS section 8.2).\n\nFor a boundary node the private measurements (``evidence_level``,\n``service_health``, ``steps_since_investigated``) are withheld (null).",
+      "properties": {
+        "alert_count_recent": {
+          "maximum": 50,
+          "minimum": 0,
+          "title": "Alert Count Recent",
+          "type": "integer"
+        },
+        "evidence_level": {
+          "anyOf": [
+            {
+              "maximum": 3,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evidence Level"
+        },
+        "max_alert_severity": {
+          "maximum": 3,
+          "minimum": 0,
+          "title": "Max Alert Severity",
+          "type": "integer"
+        },
+        "node_id": {
+          "maxLength": 40,
+          "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "title": "Node Id",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/NodeScope"
+        },
+        "service_health": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Service Health"
+        },
+        "steps_since_investigated": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Steps Since Investigated"
+        },
+        "visible_status": {
+          "$ref": "#/$defs/NodeStatus"
+        }
+      },
+      "required": [
+        "node_id",
+        "scope",
+        "visible_status",
+        "alert_count_recent",
+        "max_alert_severity"
+      ],
+      "title": "NodeObservation",
+      "type": "object"
+    },
+    "NodeScope": {
+      "description": "Whether a node is in the agent's own zone or on its boundary.",
+      "enum": [
+        "own",
+        "boundary"
+      ],
+      "title": "NodeScope",
+      "type": "string"
+    },
+    "NodeStatus": {
+      "description": "Agent-visible node status; follows from actions, not a compromise flag.",
+      "enum": [
+        "up",
+        "rate_limited",
+        "quarantined",
+        "isolated",
+        "restoring"
+      ],
+      "title": "NodeStatus",
+      "type": "string"
+    },
+    "Phase": {
+      "description": "The step phase in which an event was produced.",
+      "enum": [
+        "dynamics",
+        "outcome",
+        "lifecycle"
+      ],
+      "title": "Phase",
+      "type": "string"
+    },
+    "ProposalFeedback": {
+      "additionalProperties": false,
+      "description": "What happened to one of the agent's proposals of the previous step.",
+      "properties": {
+        "decision": {
+          "$ref": "#/$defs/Decision"
+        },
+        "execution_status": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ExecutionStatus"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "proposal_id": {
+          "pattern": "^prop-[0-9]{6}$",
+          "title": "Proposal Id",
+          "type": "string"
+        },
+        "reason_codes": {
+          "items": {
+            "$ref": "#/$defs/ReasonCode"
+          },
+          "title": "Reason Codes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "proposal_id",
+        "decision"
+      ],
+      "title": "ProposalFeedback",
+      "type": "object"
+    },
+    "ReasonCode": {
+      "description": "Coordinator rejection codes (CONTRACTS section 8.6).\n\nThe member order is the canonical check order used to validate that a\n:class:`~cyberswarm.contracts.actions.ValidationResult` lists its codes in\norder. ``ReasonCode`` and :class:`ErrorCode` are separate enums that share\nonly the literal ``SCHEMA_INVALID``.",
+      "enum": [
+        "SCHEMA_INVALID",
+        "EPISODE_MISMATCH",
+        "EPISODE_NOT_ACTIVE",
+        "WRONG_STEP",
+        "AGENT_UNKNOWN",
+        "DUPLICATE_PROPOSAL",
+        "UNKNOWN_ACTION_KIND",
+        "ACTION_NOT_ALLOWLISTED",
+        "TARGET_REQUIRED",
+        "TARGET_NOT_ALLOWED",
+        "UNKNOWN_TARGET_NODE",
+        "TARGET_OUT_OF_AUTHORITY",
+        "PARAMETER_INVALID",
+        "ACTION_NOT_AVAILABLE",
+        "CONFLICTING_PROPOSAL",
+        "HIGH_IMPACT_BUDGET_EXCEEDED"
+      ],
+      "title": "ReasonCode",
+      "type": "string"
+    },
+    "Severity": {
+      "description": "Abstract alert severity.",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "Severity",
+      "type": "string"
+    }
+  },
+  "$id": "urn:cyberswarm:schema:AgentObservation:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "What one decision agent may see at step ``t`` (CONTRACTS section 8.2).",
+  "properties": {
+    "agent_id": {
+      "pattern": "^agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Agent Id",
+      "type": "string"
+    },
+    "edges": {
+      "items": {
+        "$ref": "#/$defs/EdgeObservation"
+      },
+      "title": "Edges",
+      "type": "array"
+    },
+    "episode_id": {
+      "maxLength": 120,
+      "pattern": "^ep-[a-z0-9]+(?:-[a-z0-9]+)*-s[0-9]+$",
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "last_step_feedback": {
+      "items": {
+        "$ref": "#/$defs/ProposalFeedback"
+      },
+      "title": "Last Step Feedback",
+      "type": "array"
+    },
+    "max_steps": {
+      "minimum": 1,
+      "title": "Max Steps",
+      "type": "integer"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/NodeObservation"
+      },
+      "title": "Nodes",
+      "type": "array"
+    },
+    "observation_id": {
+      "pattern": "^obs-[0-9]{4}-agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Observation Id",
+      "type": "string"
+    },
+    "observation_window_steps": {
+      "maximum": 20,
+      "minimum": 1,
+      "title": "Observation Window Steps",
+      "type": "integer"
+    },
+    "recent_events": {
+      "items": {
+        "$ref": "#/$defs/EventRecord"
+      },
+      "title": "Recent Events",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "step": {
+      "maximum": 10000,
+      "minimum": 0,
+      "title": "Step",
+      "type": "integer"
+    },
+    "zone_id": {
+      "pattern": "^zone-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Zone Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "observation_id",
+    "episode_id",
+    "step",
+    "agent_id",
+    "zone_id",
+    "max_steps",
+    "observation_window_steps"
+  ],
+  "title": "AgentObservation",
+  "type": "object"
+}

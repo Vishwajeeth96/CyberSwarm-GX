@@ -1,0 +1,1 @@
+{"schema_version":"1.0","episode_id":"ep-rule-conv-v1-mock-lateral-eval-01-s2001","step":5,"visibility":"evaluator_only","incident_active":true,"nodes":[{"node_id":"node-web-02","compromised":true,"service_availability":0.9,"defense_availability":1.0,"contained":false,"status":"up"}],"new_compromises":[],"alert_truth":[{"event_id":"evt-000014","true_positive":true}]}

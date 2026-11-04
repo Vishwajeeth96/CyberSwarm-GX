@@ -1,0 +1,229 @@
+{
+  "$defs": {
+    "ActionKind": {
+      "description": "The eight abstract defensive actions (CONTRACTS section 6).",
+      "enum": [
+        "no_op",
+        "monitor_node",
+        "investigate_node",
+        "request_evidence",
+        "rate_limit_node",
+        "quarantine_node",
+        "isolate_node",
+        "restore_node"
+      ],
+      "title": "ActionKind",
+      "type": "string"
+    },
+    "ActionParameters": {
+      "additionalProperties": false,
+      "description": "Action parameters; ``{}`` means defaults (CONTRACTS section 6).",
+      "properties": {
+        "duration_steps": {
+          "anyOf": [
+            {
+              "maximum": 5,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Duration Steps"
+        },
+        "level": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RateLimitLevel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "ActionParameters",
+      "type": "object"
+    },
+    "ActionSpec": {
+      "additionalProperties": false,
+      "description": "A fully specified abstract action (CONTRACTS section 6).",
+      "properties": {
+        "action_kind": {
+          "$ref": "#/$defs/ActionKind"
+        },
+        "parameters": {
+          "$ref": "#/$defs/ActionParameters"
+        },
+        "target_node_id": {
+          "anyOf": [
+            {
+              "maxLength": 40,
+              "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Node Id"
+        }
+      },
+      "required": [
+        "action_kind"
+      ],
+      "title": "ActionSpec",
+      "type": "object"
+    },
+    "Decision": {
+      "description": "Coordinator decision on a proposal. There is no third state.",
+      "enum": [
+        "accepted",
+        "rejected"
+      ],
+      "title": "Decision",
+      "type": "string"
+    },
+    "RateLimitLevel": {
+      "description": "Allowed ``level`` parameter of ``rate_limit_node``.",
+      "enum": [
+        "light",
+        "heavy"
+      ],
+      "title": "RateLimitLevel",
+      "type": "string"
+    },
+    "ReasonCode": {
+      "description": "Coordinator rejection codes (CONTRACTS section 8.6).\n\nThe member order is the canonical check order used to validate that a\n:class:`~cyberswarm.contracts.actions.ValidationResult` lists its codes in\norder. ``ReasonCode`` and :class:`ErrorCode` are separate enums that share\nonly the literal ``SCHEMA_INVALID``.",
+      "enum": [
+        "SCHEMA_INVALID",
+        "EPISODE_MISMATCH",
+        "EPISODE_NOT_ACTIVE",
+        "WRONG_STEP",
+        "AGENT_UNKNOWN",
+        "DUPLICATE_PROPOSAL",
+        "UNKNOWN_ACTION_KIND",
+        "ACTION_NOT_ALLOWLISTED",
+        "TARGET_REQUIRED",
+        "TARGET_NOT_ALLOWED",
+        "UNKNOWN_TARGET_NODE",
+        "TARGET_OUT_OF_AUTHORITY",
+        "PARAMETER_INVALID",
+        "ACTION_NOT_AVAILABLE",
+        "CONFLICTING_PROPOSAL",
+        "HIGH_IMPACT_BUDGET_EXCEEDED"
+      ],
+      "title": "ReasonCode",
+      "type": "string"
+    }
+  },
+  "$id": "urn:cyberswarm:schema:ValidationResult:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "The coordinator's decision on one proposal (CONTRACTS section 8.6).",
+  "properties": {
+    "agent_id": {
+      "anyOf": [
+        {
+          "pattern": "^agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Agent Id"
+    },
+    "allowlist_id": {
+      "maxLength": 160,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9 .,()_-]+$",
+      "title": "Allowlist Id",
+      "type": "string"
+    },
+    "decision": {
+      "$ref": "#/$defs/Decision"
+    },
+    "episode_id": {
+      "maxLength": 120,
+      "pattern": "^ep-[a-z0-9]+(?:-[a-z0-9]+)*-s[0-9]+$",
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "proposal_id": {
+      "anyOf": [
+        {
+          "pattern": "^prop-[0-9]{6}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Proposal Id"
+    },
+    "reason_codes": {
+      "items": {
+        "$ref": "#/$defs/ReasonCode"
+      },
+      "title": "Reason Codes",
+      "type": "array"
+    },
+    "resolved_action": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ActionSpec"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "state_digest": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "State Digest"
+    },
+    "step": {
+      "maximum": 10000,
+      "minimum": 0,
+      "title": "Step",
+      "type": "integer"
+    },
+    "validation_id": {
+      "pattern": "^val-[0-9]{6}$",
+      "title": "Validation Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "validation_id",
+    "episode_id",
+    "step",
+    "proposal_id",
+    "agent_id",
+    "decision",
+    "resolved_action",
+    "allowlist_id"
+  ],
+  "title": "ValidationResult",
+  "type": "object"
+}

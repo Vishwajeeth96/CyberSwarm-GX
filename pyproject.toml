@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cyberswarm"
+description = "Project-lead-owned foundation for CyberSwarm, a multi-agent reinforcement-learning system for autonomous cyber defense in a controlled simulator."
+readme = "README.md"
+requires-python = ">=3.12"
+dynamic = ["version"]
+dependencies = [
+    "pydantic>=2.12,<3",
+    "numpy>=2.0",
+    "networkx>=3.4",
+]
+
+[project.optional-dependencies]
+rl = ["torch>=2.5", "gymnasium>=1.0,<2", "pettingzoo>=1.24"]
+dev = ["pytest>=8", "jsonschema>=4.20"]
+
+[tool.setuptools.dynamic]
+version = { attr = "cyberswarm.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--import-mode=importlib"
+markers = [
+    "slow: marks tests as slow to run (deselect with '-m \"not slow\"')",
+]

@@ -1,0 +1,102 @@
+{
+  "$id": "urn:cyberswarm:schema:GraphFeatureRecord:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Hand-engineered graph-derived features (CONTRACTS section 10.2).",
+  "properties": {
+    "agent_id": {
+      "pattern": "^agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Agent Id",
+      "type": "string"
+    },
+    "episode_id": {
+      "maxLength": 120,
+      "pattern": "^ep-[a-z0-9]+(?:-[a-z0-9]+)*-s[0-9]+$",
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "feature_names": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Feature Names",
+      "type": "array"
+    },
+    "feature_record_id": {
+      "pattern": "^gft-[0-9]{4}-agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Feature Record Id",
+      "type": "string"
+    },
+    "feature_set_id": {
+      "const": "graph-derived-v1",
+      "default": "graph-derived-v1",
+      "title": "Feature Set Id",
+      "type": "string"
+    },
+    "mask": {
+      "items": {
+        "items": {
+          "type": "integer"
+        },
+        "type": "array"
+      },
+      "title": "Mask",
+      "type": "array"
+    },
+    "node_order": {
+      "items": {
+        "maxLength": 40,
+        "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+        "type": "string"
+      },
+      "title": "Node Order",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "snapshot_id": {
+      "pattern": "^gsn-[0-9]{4}-agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Snapshot Id",
+      "type": "string"
+    },
+    "step": {
+      "maximum": 10000,
+      "minimum": 0,
+      "title": "Step",
+      "type": "integer"
+    },
+    "topology_id": {
+      "pattern": "^topo-[a-z0-9]+(?:-[a-z0-9]+)*-v[0-9]+$",
+      "title": "Topology Id",
+      "type": "string"
+    },
+    "values": {
+      "items": {
+        "items": {
+          "type": "number"
+        },
+        "type": "array"
+      },
+      "title": "Values",
+      "type": "array"
+    }
+  },
+  "required": [
+    "feature_record_id",
+    "episode_id",
+    "step",
+    "agent_id",
+    "topology_id",
+    "snapshot_id",
+    "node_order",
+    "feature_names",
+    "values",
+    "mask"
+  ],
+  "title": "GraphFeatureRecord",
+  "type": "object"
+}

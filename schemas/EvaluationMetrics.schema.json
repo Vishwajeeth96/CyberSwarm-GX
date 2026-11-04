@@ -1,0 +1,296 @@
+{
+  "$defs": {
+    "CIMethod": {
+      "description": "Confidence-interval method.",
+      "enum": [
+        "percentile_bootstrap"
+      ],
+      "title": "CIMethod",
+      "type": "string"
+    },
+    "MetricSummary": {
+      "additionalProperties": false,
+      "description": "Summary of one metric over a matched set (CONTRACTS section 11.2).",
+      "properties": {
+        "ci_high": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ci High"
+        },
+        "ci_low": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ci Low"
+        },
+        "mean": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mean"
+        },
+        "n": {
+          "minimum": 0,
+          "title": "N",
+          "type": "integer"
+        },
+        "n_undefined": {
+          "minimum": 0,
+          "title": "N Undefined",
+          "type": "integer"
+        },
+        "name": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9 .,()_-]+$",
+          "title": "Name",
+          "type": "string"
+        },
+        "scorer_id": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9 .,()_-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scorer Id"
+        },
+        "std": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Std"
+        }
+      },
+      "required": [
+        "name",
+        "n",
+        "n_undefined"
+      ],
+      "title": "MetricSummary",
+      "type": "object"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "description": "Where a measured or compared record's values came from.",
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/ProvenanceKind"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9 .,()_-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "ProvenanceKind": {
+      "description": "Where a record's values came from.",
+      "enum": [
+        "fixture_synthetic",
+        "mock_simulator_run",
+        "simulator_run"
+      ],
+      "title": "ProvenanceKind",
+      "type": "string"
+    },
+    "Representation": {
+      "description": "Observation representation of a policy arm.\n\n``learned_embedding`` names the staged learned-graph experiment and is part\nof version 1.0 so that adding that stage is not a contract change; no record\ncarries it unless that stage ran.",
+      "enum": [
+        "conventional",
+        "graph_features",
+        "learned_embedding"
+      ],
+      "title": "Representation",
+      "type": "string"
+    },
+    "Split": {
+      "description": "Dataset split.\n\n``eval`` holds held-out scenarios on the training topology; ``eval_utopo``\nholds held-out scenarios on the unseen topology variant. ``cal`` is used\nonly for threshold selection, calibration and model selection and is never\nreported as a result.",
+      "enum": [
+        "train",
+        "cal",
+        "eval",
+        "eval_utopo",
+        "dev",
+        "fixture"
+      ],
+      "title": "Split",
+      "type": "string"
+    }
+  },
+  "$id": "urn:cyberswarm:schema:EvaluationMetrics:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Metrics for one policy, representation and split (CONTRACTS 11.2).",
+  "properties": {
+    "bootstrap_resamples": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Bootstrap Resamples"
+    },
+    "ci_method": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CIMethod"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "matched_set_id": {
+      "pattern": "^set-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Matched Set Id",
+      "type": "string"
+    },
+    "metrics": {
+      "items": {
+        "$ref": "#/$defs/MetricSummary"
+      },
+      "title": "Metrics",
+      "type": "array"
+    },
+    "metrics_id": {
+      "pattern": "^met-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Metrics Id",
+      "type": "string"
+    },
+    "n_aborted": {
+      "minimum": 0,
+      "title": "N Aborted",
+      "type": "integer"
+    },
+    "n_episodes": {
+      "minimum": 1,
+      "title": "N Episodes",
+      "type": "integer"
+    },
+    "policy_family_id": {
+      "pattern": "^fam-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Policy Family Id",
+      "type": "string"
+    },
+    "policy_id": {
+      "pattern": "^pol-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Policy Id",
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "representation": {
+      "$ref": "#/$defs/Representation"
+    },
+    "run_id": {
+      "pattern": "^run-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "scenario_ids": {
+      "items": {
+        "pattern": "^scn-[a-z0-9]+(?:-[a-z0-9]+)*$",
+        "type": "string"
+      },
+      "title": "Scenario Ids",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "seeds": {
+      "items": {
+        "type": "integer"
+      },
+      "title": "Seeds",
+      "type": "array"
+    },
+    "split": {
+      "$ref": "#/$defs/Split"
+    },
+    "training_seed": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Training Seed"
+    }
+  },
+  "required": [
+    "metrics_id",
+    "run_id",
+    "policy_id",
+    "representation",
+    "split",
+    "policy_family_id",
+    "matched_set_id",
+    "n_episodes",
+    "n_aborted",
+    "provenance"
+  ],
+  "title": "EvaluationMetrics",
+  "type": "object"
+}
