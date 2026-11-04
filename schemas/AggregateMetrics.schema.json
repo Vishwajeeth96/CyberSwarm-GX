@@ -1,0 +1,323 @@
+{
+  "$defs": {
+    "AggregateMetricSummary": {
+      "additionalProperties": false,
+      "description": "Summary of one metric aggregated across training seeds (11.8).",
+      "properties": {
+        "ci_high": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ci High"
+        },
+        "ci_low": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ci Low"
+        },
+        "mean": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mean"
+        },
+        "n_units_defined": {
+          "minimum": 0,
+          "title": "N Units Defined",
+          "type": "integer"
+        },
+        "name": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9 .,()_-]+$",
+          "title": "Name",
+          "type": "string"
+        },
+        "per_seed_means": {
+          "items": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Per Seed Means",
+          "type": "array"
+        },
+        "scorer_id": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9 .,()_-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Scorer Id"
+        },
+        "std": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Std"
+        }
+      },
+      "required": [
+        "name",
+        "n_units_defined"
+      ],
+      "title": "AggregateMetricSummary",
+      "type": "object"
+    },
+    "CIMethod": {
+      "description": "Confidence-interval method.",
+      "enum": [
+        "percentile_bootstrap"
+      ],
+      "title": "CIMethod",
+      "type": "string"
+    },
+    "LearningCheck": {
+      "description": "Descriptive training-return check; says nothing about policy quality.",
+      "enum": [
+        "improved",
+        "not_improved",
+        "not_assessed"
+      ],
+      "title": "LearningCheck",
+      "type": "string"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "description": "Where a measured or compared record's values came from.",
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/ProvenanceKind"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9 .,()_-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "ProvenanceKind": {
+      "description": "Where a record's values came from.",
+      "enum": [
+        "fixture_synthetic",
+        "mock_simulator_run",
+        "simulator_run"
+      ],
+      "title": "ProvenanceKind",
+      "type": "string"
+    },
+    "Representation": {
+      "description": "Observation representation of a policy arm.\n\n``learned_embedding`` names the staged learned-graph experiment and is part\nof version 1.0 so that adding that stage is not a contract change; no record\ncarries it unless that stage ran.",
+      "enum": [
+        "conventional",
+        "graph_features",
+        "learned_embedding"
+      ],
+      "title": "Representation",
+      "type": "string"
+    },
+    "Split": {
+      "description": "Dataset split.\n\n``eval`` holds held-out scenarios on the training topology; ``eval_utopo``\nholds held-out scenarios on the unseen topology variant. ``cal`` is used\nonly for threshold selection, calibration and model selection and is never\nreported as a result.",
+      "enum": [
+        "train",
+        "cal",
+        "eval",
+        "eval_utopo",
+        "dev",
+        "fixture"
+      ],
+      "title": "Split",
+      "type": "string"
+    },
+    "TrainingOutcome": {
+      "additionalProperties": false,
+      "description": "Training status and learning check for one training seed.",
+      "properties": {
+        "learning_check": {
+          "$ref": "#/$defs/LearningCheck"
+        },
+        "training_seed": {
+          "minimum": 0,
+          "title": "Training Seed",
+          "type": "integer"
+        },
+        "training_status": {
+          "$ref": "#/$defs/TrainingStatus"
+        }
+      },
+      "required": [
+        "training_seed",
+        "training_status",
+        "learning_check"
+      ],
+      "title": "TrainingOutcome",
+      "type": "object"
+    },
+    "TrainingStatus": {
+      "description": "Whether training of a seed completed.",
+      "enum": [
+        "completed",
+        "aborted"
+      ],
+      "title": "TrainingStatus",
+      "type": "string"
+    }
+  },
+  "$id": "urn:cyberswarm:schema:AggregateMetrics:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Statistics over training seeds for a learned arm (CONTRACTS 11.8).",
+  "properties": {
+    "aggregate_id": {
+      "pattern": "^agg-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Aggregate Id",
+      "type": "string"
+    },
+    "bootstrap_resamples": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Bootstrap Resamples"
+    },
+    "ci_method": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CIMethod"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "matched_set_id": {
+      "pattern": "^set-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Matched Set Id",
+      "type": "string"
+    },
+    "metrics": {
+      "items": {
+        "$ref": "#/$defs/AggregateMetricSummary"
+      },
+      "title": "Metrics",
+      "type": "array"
+    },
+    "n_units": {
+      "minimum": 1,
+      "title": "N Units",
+      "type": "integer"
+    },
+    "policy_family_id": {
+      "pattern": "^fam-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Policy Family Id",
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "representation": {
+      "$ref": "#/$defs/Representation"
+    },
+    "run_id": {
+      "pattern": "^run-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "split": {
+      "$ref": "#/$defs/Split"
+    },
+    "training_outcomes": {
+      "items": {
+        "$ref": "#/$defs/TrainingOutcome"
+      },
+      "title": "Training Outcomes",
+      "type": "array"
+    },
+    "training_seeds": {
+      "items": {
+        "type": "integer"
+      },
+      "minItems": 1,
+      "title": "Training Seeds",
+      "type": "array"
+    }
+  },
+  "required": [
+    "aggregate_id",
+    "run_id",
+    "policy_family_id",
+    "representation",
+    "split",
+    "matched_set_id",
+    "training_seeds",
+    "n_units",
+    "provenance"
+  ],
+  "title": "AggregateMetrics",
+  "type": "object"
+}

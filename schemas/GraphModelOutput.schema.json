@@ -1,0 +1,125 @@
+{
+  "$id": "urn:cyberswarm:schema:GraphModelOutput:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Optional learned-graph output; null payload when no model ran (10.3).",
+  "properties": {
+    "agent_id": {
+      "pattern": "^agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Agent Id",
+      "type": "string"
+    },
+    "episode_id": {
+      "maxLength": 120,
+      "pattern": "^ep-[a-z0-9]+(?:-[a-z0-9]+)*-s[0-9]+$",
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "graph_model_output_id": {
+      "pattern": "^gmo-[0-9]{4}-agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Graph Model Output Id",
+      "type": "string"
+    },
+    "model_id": {
+      "anyOf": [
+        {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9 .,()_-]+$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Model Id"
+    },
+    "node_order": {
+      "anyOf": [
+        {
+          "items": {
+            "maxLength": 40,
+            "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Node Order"
+    },
+    "output_kind": {
+      "anyOf": [
+        {
+          "enum": [
+            "anomaly_score",
+            "embedding"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Output Kind"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "snapshot_id": {
+      "pattern": "^gsn-[0-9]{4}-agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Snapshot Id",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "computed",
+        "not_computed"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "step": {
+      "maximum": 10000,
+      "minimum": 0,
+      "title": "Step",
+      "type": "integer"
+    },
+    "values": {
+      "anyOf": [
+        {
+          "items": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Values"
+    }
+  },
+  "required": [
+    "graph_model_output_id",
+    "episode_id",
+    "step",
+    "agent_id",
+    "snapshot_id",
+    "status",
+    "model_id",
+    "output_kind",
+    "node_order",
+    "values"
+  ],
+  "title": "GraphModelOutput",
+  "type": "object"
+}

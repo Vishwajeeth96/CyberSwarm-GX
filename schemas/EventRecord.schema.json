@@ -1,0 +1,289 @@
+{
+  "$defs": {
+    "ActionKind": {
+      "description": "The eight abstract defensive actions (CONTRACTS section 6).",
+      "enum": [
+        "no_op",
+        "monitor_node",
+        "investigate_node",
+        "request_evidence",
+        "rate_limit_node",
+        "quarantine_node",
+        "isolate_node",
+        "restore_node"
+      ],
+      "title": "ActionKind",
+      "type": "string"
+    },
+    "AlertCategory": {
+      "description": "Abstract alert class; no technique names.",
+      "enum": [
+        "traffic_anomaly",
+        "access_anomaly",
+        "service_anomaly"
+      ],
+      "title": "AlertCategory",
+      "type": "string"
+    },
+    "EventProducer": {
+      "description": "Who produced the event.",
+      "enum": [
+        "simulator",
+        "coordinator"
+      ],
+      "title": "EventProducer",
+      "type": "string"
+    },
+    "EventType": {
+      "description": "Closed set of agent-visible event types (CONTRACTS section 8.1).",
+      "enum": [
+        "episode_started",
+        "alert_raised",
+        "restore_completed",
+        "node_status_changed",
+        "action_applied",
+        "investigation_result",
+        "recovery_verified",
+        "recovery_failed",
+        "episode_ended"
+      ],
+      "title": "EventType",
+      "type": "string"
+    },
+    "NodeStatus": {
+      "description": "Agent-visible node status; follows from actions, not a compromise flag.",
+      "enum": [
+        "up",
+        "rate_limited",
+        "quarantined",
+        "isolated",
+        "restoring"
+      ],
+      "title": "NodeStatus",
+      "type": "string"
+    },
+    "Phase": {
+      "description": "The step phase in which an event was produced.",
+      "enum": [
+        "dynamics",
+        "outcome",
+        "lifecycle"
+      ],
+      "title": "Phase",
+      "type": "string"
+    },
+    "Severity": {
+      "description": "Abstract alert severity.",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "Severity",
+      "type": "string"
+    }
+  },
+  "$id": "urn:cyberswarm:schema:EventRecord:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "One agent-visible event (CONTRACTS section 8.1).",
+  "properties": {
+    "action_kind": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ActionKind"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "agent_id": {
+      "anyOf": [
+        {
+          "pattern": "^agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Agent Id"
+    },
+    "alert_category": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AlertCategory"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "episode_id": {
+      "maxLength": 120,
+      "pattern": "^ep-[a-z0-9]+(?:-[a-z0-9]+)*-s[0-9]+$",
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "event_id": {
+      "pattern": "^(?:evt|cev)-[0-9]{6}$",
+      "title": "Event Id",
+      "type": "string"
+    },
+    "event_type": {
+      "$ref": "#/$defs/EventType"
+    },
+    "evidence_level": {
+      "anyOf": [
+        {
+          "maximum": 3,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Evidence Level"
+    },
+    "execution_id": {
+      "anyOf": [
+        {
+          "pattern": "^exe-[0-9]{6}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Execution Id"
+    },
+    "node_id": {
+      "anyOf": [
+        {
+          "maxLength": 40,
+          "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Node Id"
+    },
+    "phase": {
+      "$ref": "#/$defs/Phase"
+    },
+    "producer": {
+      "$ref": "#/$defs/EventProducer"
+    },
+    "proposal_id": {
+      "anyOf": [
+        {
+          "pattern": "^prop-[0-9]{6}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Proposal Id"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "severity": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Severity"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "status_from": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/NodeStatus"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "status_to": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/NodeStatus"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "step": {
+      "maximum": 10000,
+      "minimum": 0,
+      "title": "Step",
+      "type": "integer"
+    },
+    "terminated": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Terminated"
+    },
+    "truncated": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Truncated"
+    },
+    "visible_to": {
+      "items": {
+        "pattern": "^agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+        "type": "string"
+      },
+      "title": "Visible To",
+      "type": "array"
+    }
+  },
+  "required": [
+    "event_id",
+    "episode_id",
+    "step",
+    "phase",
+    "event_type",
+    "producer",
+    "visible_to"
+  ],
+  "title": "EventRecord",
+  "type": "object"
+}

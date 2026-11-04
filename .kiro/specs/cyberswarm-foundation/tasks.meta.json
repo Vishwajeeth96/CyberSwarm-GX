@@ -1,0 +1,648 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Create `pyproject.toml` and the `src/` layout": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631047
+      },
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382659965
+      },
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382947467
+      }
+    ],
+    "1.2 Create `.gitignore`": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631119
+      },
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382660290
+      },
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382948792
+      }
+    ],
+    "1.3 Create the virtual environment and record tested versions": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631145
+      },
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382970845
+      },
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793383967773
+      }
+    ],
+    "2.1 Reconcile `docs/ARCHITECTURE.md` and `docs/DECISIONS.md` to the corrected scope": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631163
+      },
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382971960
+      },
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793383969209
+      }
+    ],
+    "2.2 Record corrected decisions for the MEDIUM findings and make shared content relative": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631199
+      },
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793383984582
+      },
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793385923989
+      }
+    ],
+    "3.1 Implement the contracts package": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631220
+      },
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793383983961
+      },
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793385922573
+      }
+    ],
+    "3.2 Implement the common package": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631241
+      },
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793385937058
+      },
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793387732111
+      }
+    ],
+    "3.3 Export JSON Schemas": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631264
+      },
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793385938458
+      },
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793387733011
+      }
+    ],
+    "3.4 Build the storyboard and primary fixtures": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631302
+      },
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793385939150
+      },
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793387733951
+      }
+    ],
+    "3.5 Write and run the contract tests": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631320
+      },
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793387749702
+      },
+      {
+        "executionId": "1c8c178b-5bdb-4d71-97d6-a4a727d11d35",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793397425625
+      }
+    ],
+    "4.1 Implement interfaces and the conformance mixin": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631341
+      },
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793387749847
+      },
+      {
+        "executionId": "1c8c178b-5bdb-4d71-97d6-a4a727d11d35",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793397426341
+      }
+    ],
+    "4.2 Enforce import boundaries": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631360
+      },
+      {
+        "executionId": "1c8c178b-5bdb-4d71-97d6-a4a727d11d35",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793397444292
+      },
+      {
+        "executionId": "1c8c178b-5bdb-4d71-97d6-a4a727d11d35",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793399316927
+      }
+    ],
+    "5.1 Author topologies, scenarios, and splits": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631387
+      },
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793387750303
+      },
+      {
+        "executionId": "1c8c178b-5bdb-4d71-97d6-a4a727d11d35",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793397427241
+      }
+    ],
+    "5.2 Implement the mock dynamics, effects, observation, and truth": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631411
+      },
+      {
+        "executionId": "1c8c178b-5bdb-4d71-97d6-a4a727d11d35",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793397445336
+      },
+      {
+        "executionId": "1c8c178b-5bdb-4d71-97d6-a4a727d11d35",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793399317819
+      }
+    ],
+    "5.3 Write and run the mock and conformance tests": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631438
+      },
+      {
+        "executionId": "1c8c178b-5bdb-4d71-97d6-a4a727d11d35",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793399330511
+      },
+      {
+        "executionId": "1c8c178b-5bdb-4d71-97d6-a4a727d11d35",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793401033518
+      }
+    ],
+    "6.1 Implement the detection and evidence roles": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631456
+      },
+      {
+        "executionId": "1c8c178b-5bdb-4d71-97d6-a4a727d11d35",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793397446317
+      },
+      {
+        "executionId": "1c8c178b-5bdb-4d71-97d6-a4a727d11d35",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793399319161
+      }
+    ],
+    "6.2 Implement the graph conversion, features, and tensors": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631475
+      },
+      {
+        "executionId": "1c8c178b-5bdb-4d71-97d6-a4a727d11d35",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793397447350
+      },
+      {
+        "executionId": "1c8c178b-5bdb-4d71-97d6-a4a727d11d35",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793399320073
+      }
+    ],
+    "6.3 Build graph fixtures and the focused graph-evidence command": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631495
+      },
+      {
+        "executionId": "1c8c178b-5bdb-4d71-97d6-a4a727d11d35",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793399331230
+      },
+      {
+        "executionId": "1c8c178b-5bdb-4d71-97d6-a4a727d11d35",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793401034824
+      },
+      {
+        "executionId": "43ee7fee-ac78-4fa9-a683-c88a77149c7f",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793415684357
+      }
+    ],
+    "6.4 Write and run the graph and role tests": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631516
+      },
+      {
+        "executionId": "43ee7fee-ac78-4fa9-a683-c88a77149c7f",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793414582867
+      },
+      {
+        "executionId": "43ee7fee-ac78-4fa9-a683-c88a77149c7f",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793415665319
+      }
+    ],
+    "7.1 Implement the episode engine and recorders": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631537
+      },
+      {
+        "executionId": "43ee7fee-ac78-4fa9-a683-c88a77149c7f",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793415694475
+      },
+      {
+        "executionId": "43ee7fee-ac78-4fa9-a683-c88a77149c7f",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793417595095
+      }
+    ],
+    "7.2 Implement the configurable reward model": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631562
+      },
+      {
+        "executionId": "43ee7fee-ac78-4fa9-a683-c88a77149c7f",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793415695011
+      },
+      {
+        "executionId": "43ee7fee-ac78-4fa9-a683-c88a77149c7f",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793417595795
+      }
+    ],
+    "7.3 Implement the RL action table, encoder, and environment": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631590
+      },
+      {
+        "executionId": "43ee7fee-ac78-4fa9-a683-c88a77149c7f",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793417608965
+      },
+      {
+        "executionId": "43ee7fee-ac78-4fa9-a683-c88a77149c7f",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793418953277
+      }
+    ],
+    "7.4 Write and run the environment and reward tests": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631607
+      },
+      {
+        "executionId": "43ee7fee-ac78-4fa9-a683-c88a77149c7f",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793418973562
+      },
+      {
+        "executionId": "43ee7fee-ac78-4fa9-a683-c88a77149c7f",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793420331132
+      }
+    ],
+    "8.1 Implement the rule-based conventional baseline": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631627
+      },
+      {
+        "executionId": "43ee7fee-ac78-4fa9-a683-c88a77149c7f",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793418974390
+      },
+      {
+        "executionId": "43ee7fee-ac78-4fa9-a683-c88a77149c7f",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793420332111
+      }
+    ],
+    "8.2 Implement the non-neural graph-feature baseline": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631645
+      },
+      {
+        "executionId": "43ee7fee-ac78-4fa9-a683-c88a77149c7f",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793420333086
+      },
+      {
+        "executionId": "43ee7fee-ac78-4fa9-a683-c88a77149c7f",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793421429803
+      }
+    ],
+    "8.3 Write and run the baseline tests": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631667
+      },
+      {
+        "executionId": "43ee7fee-ac78-4fa9-a683-c88a77149c7f",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793421438731
+      }
+    ],
+    "9.1 Implement the coordinator": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631689
+      },
+      {
+        "executionId": "43ee7fee-ac78-4fa9-a683-c88a77149c7f",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793421439726
+      }
+    ],
+    "9.2 Write and run the coordinator and safety tests": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631708
+      }
+    ],
+    "10.1 Implement the PPO units": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631731
+      }
+    ],
+    "10.2 Implement the trainer, checkpoint, and policy": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631753
+      }
+    ],
+    "10.3 Implement the training CLI and the thin evaluation slice": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631775
+      }
+    ],
+    "10.4 Write and run the IPPO and status tests": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631795
+      }
+    ],
+    "11.1 Implement the signal, rules, and wrappers": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631820
+      }
+    ],
+    "11.2 Implement calibration and the evaluator-only label bridge": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631850
+      }
+    ],
+    "11.3 Verify matched-control equivalence": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631871
+      }
+    ],
+    "12.1 Implement the evaluation package": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631893
+      }
+    ],
+    "12.2 Implement the runner and the smoke command": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631912
+      }
+    ],
+    "12.3 Build the derived fixtures and dashboard bundles": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631931
+      }
+    ],
+    "12.4 Write and run the integration tests and the full suite": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631952
+      }
+    ],
+    "13.1 Build the dataset and the go/no-go gate": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631972
+      }
+    ],
+    "13.2 Implement the plain-PyTorch graph models": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382631993
+      }
+    ],
+    "13.3 Run the graph-model tests, the ablation, and record the decision": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382632015
+      }
+    ],
+    "14.1 Implement MAPPO and its training path": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382632037
+      }
+    ],
+    "14.2 Run the MAPPO tests, the comparison, and record the decision": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382632056
+      }
+    ],
+    "15.1 Reconcile the project documentation": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382632079
+      }
+    ],
+    "15.2 Write the teammate specs and AI prompts": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382632099
+      }
+    ],
+    "15.3 Run the documentation validator and final verification": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793382632118
+      }
+    ],
+    "1. Project scaffold and environment **[Implementation]**": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793383967802
+      }
+    ],
+    "2. Reconcile design docs and record corrected decisions **[Documentation]**": [
+      {
+        "executionId": "d6e38ac1-a7b7-4e8b-bf0d-ef43c82386a1",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793385924016
+      }
+    ],
+    "3. Contracts, schema export, fixtures, and contract tests **[Implementation]**": [
+      {
+        "executionId": "1c8c178b-5bdb-4d71-97d6-a4a727d11d35",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793397425658
+      }
+    ],
+    "4. Public simulator interface and conformance suite **[Implementation]**": [
+      {
+        "executionId": "1c8c178b-5bdb-4d71-97d6-a4a727d11d35",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793399316961
+      }
+    ],
+    "5. Lead-owned mock simulator **[Implementation]**": [
+      {
+        "executionId": "1c8c178b-5bdb-4d71-97d6-a4a727d11d35",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793401033552
+      }
+    ],
+    "6. Observation-to-graph pipeline and graph tests **[Implementation]**": [
+      {
+        "executionId": "43ee7fee-ac78-4fa9-a683-c88a77149c7f",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793415684383
+      }
+    ],
+    "7. RL environment and configurable reward **[Implementation]**": [
+      {
+        "executionId": "43ee7fee-ac78-4fa9-a683-c88a77149c7f",
+        "chatSessionId": "sess_ba18e391-f3ce-4adb-b62f-21306747f256",
+        "timestamp": 1793420331168
+      }
+    ]
+  }
+}

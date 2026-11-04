@@ -1,0 +1,567 @@
+{
+  "$defs": {
+    "Counts": {
+      "additionalProperties": false,
+      "description": "Proposal/validation/execution counts of an episode.",
+      "properties": {
+        "accepted": {
+          "minimum": 0,
+          "title": "Accepted",
+          "type": "integer"
+        },
+        "executed": {
+          "minimum": 0,
+          "title": "Executed",
+          "type": "integer"
+        },
+        "failed": {
+          "minimum": 0,
+          "title": "Failed",
+          "type": "integer"
+        },
+        "proposals": {
+          "minimum": 0,
+          "title": "Proposals",
+          "type": "integer"
+        },
+        "rejected": {
+          "minimum": 0,
+          "title": "Rejected",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "proposals",
+        "accepted",
+        "rejected",
+        "executed",
+        "failed"
+      ],
+      "title": "Counts",
+      "type": "object"
+    },
+    "NodeScoring": {
+      "additionalProperties": false,
+      "description": "Per-scorer origin-ranking summary for an episode (CONTRACTS 11.1/11.2).",
+      "properties": {
+        "n_ranked_pairs": {
+          "minimum": 0,
+          "title": "N Ranked Pairs",
+          "type": "integer"
+        },
+        "origin_mrr": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Origin Mrr"
+        },
+        "origin_rank_top1": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Origin Rank Top1"
+        },
+        "scorer_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9 .,()_-]+$",
+          "title": "Scorer Id",
+          "type": "string"
+        },
+        "scorer_kind": {
+          "$ref": "#/$defs/ScorerKind"
+        }
+      },
+      "required": [
+        "scorer_id",
+        "scorer_kind",
+        "n_ranked_pairs"
+      ],
+      "title": "NodeScoring",
+      "type": "object"
+    },
+    "OutcomeSummary": {
+      "additionalProperties": false,
+      "description": "Ground-truth-derived episode outcome (CONTRACTS section 11.1).",
+      "properties": {
+        "attack_impact": {
+          "title": "Attack Impact",
+          "type": "number"
+        },
+        "compromised_nodes": {
+          "minimum": 0,
+          "title": "Compromised Nodes",
+          "type": "integer"
+        },
+        "compromised_nodes_detected": {
+          "minimum": 0,
+          "title": "Compromised Nodes Detected",
+          "type": "integer"
+        },
+        "containment_step": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Containment Step"
+        },
+        "detection_to_containment_steps": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detection To Containment Steps"
+        },
+        "false_isolation_count": {
+          "minimum": 0,
+          "title": "False Isolation Count",
+          "type": "integer"
+        },
+        "false_positive_alerts": {
+          "minimum": 0,
+          "title": "False Positive Alerts",
+          "type": "integer"
+        },
+        "first_compromise_step": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "First Compromise Step"
+        },
+        "first_true_alert_step": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "First True Alert Step"
+        },
+        "healthy_disruption_cost": {
+          "title": "Healthy Disruption Cost",
+          "type": "number"
+        },
+        "healthy_services_disrupted": {
+          "minimum": 0,
+          "title": "Healthy Services Disrupted",
+          "type": "integer"
+        },
+        "node_scoring": {
+          "items": {
+            "$ref": "#/$defs/NodeScoring"
+          },
+          "title": "Node Scoring",
+          "type": "array"
+        },
+        "objective_reached": {
+          "title": "Objective Reached",
+          "type": "boolean"
+        },
+        "origin_node_id": {
+          "anyOf": [
+            {
+              "maxLength": 40,
+              "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Origin Node Id"
+        },
+        "true_positive_alerts": {
+          "minimum": 0,
+          "title": "True Positive Alerts",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "compromised_nodes",
+        "attack_impact",
+        "healthy_services_disrupted",
+        "healthy_disruption_cost",
+        "false_isolation_count",
+        "true_positive_alerts",
+        "false_positive_alerts",
+        "compromised_nodes_detected",
+        "objective_reached"
+      ],
+      "title": "OutcomeSummary",
+      "type": "object"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "description": "Where a measured or compared record's values came from.",
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/ProvenanceKind"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9 .,()_-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "ProvenanceKind": {
+      "description": "Where a record's values came from.",
+      "enum": [
+        "fixture_synthetic",
+        "mock_simulator_run",
+        "simulator_run"
+      ],
+      "title": "ProvenanceKind",
+      "type": "string"
+    },
+    "Representation": {
+      "description": "Observation representation of a policy arm.\n\n``learned_embedding`` names the staged learned-graph experiment and is part\nof version 1.0 so that adding that stage is not a contract change; no record\ncarries it unless that stage ran.",
+      "enum": [
+        "conventional",
+        "graph_features",
+        "learned_embedding"
+      ],
+      "title": "Representation",
+      "type": "string"
+    },
+    "RewardSharing": {
+      "description": "How reward is shared among agents.",
+      "enum": [
+        "team",
+        "zone_local"
+      ],
+      "title": "RewardSharing",
+      "type": "string"
+    },
+    "RewardSummary": {
+      "additionalProperties": false,
+      "description": "Episode reward summary; null on the episode when no reward model ran.",
+      "properties": {
+        "sharing": {
+          "$ref": "#/$defs/RewardSharing"
+        },
+        "term_totals": {
+          "$ref": "#/$defs/RewardTermTotals"
+        },
+        "total": {
+          "title": "Total",
+          "type": "number"
+        },
+        "weights_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9 .,()_-]+$",
+          "title": "Weights Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sharing",
+        "weights_id",
+        "total",
+        "term_totals"
+      ],
+      "title": "RewardSummary",
+      "type": "object"
+    },
+    "RewardTermTotals": {
+      "additionalProperties": false,
+      "description": "The seven raw, unweighted reward-term magnitudes (RL_IMPLEMENTATION 4).",
+      "properties": {
+        "attack_impact": {
+          "title": "Attack Impact",
+          "type": "number"
+        },
+        "containment": {
+          "title": "Containment",
+          "type": "number"
+        },
+        "false_isolation": {
+          "title": "False Isolation",
+          "type": "number"
+        },
+        "healthy_disruption": {
+          "title": "Healthy Disruption",
+          "type": "number"
+        },
+        "invalid_action": {
+          "title": "Invalid Action",
+          "type": "number"
+        },
+        "investigation_cost": {
+          "title": "Investigation Cost",
+          "type": "number"
+        },
+        "response_delay": {
+          "title": "Response Delay",
+          "type": "number"
+        }
+      },
+      "required": [
+        "containment",
+        "response_delay",
+        "attack_impact",
+        "false_isolation",
+        "healthy_disruption",
+        "investigation_cost",
+        "invalid_action"
+      ],
+      "title": "RewardTermTotals",
+      "type": "object"
+    },
+    "ScorerKind": {
+      "description": "Which component produced a per-node suspicion score.",
+      "enum": [
+        "detection_rule",
+        "graph_feature_rule",
+        "learned_graph_model"
+      ],
+      "title": "ScorerKind",
+      "type": "string"
+    },
+    "SimulatorKind": {
+      "description": "Which simulator produced a run. A mock run is never labelled a result.",
+      "enum": [
+        "mock",
+        "simulator",
+        "fixture"
+      ],
+      "title": "SimulatorKind",
+      "type": "string"
+    },
+    "Split": {
+      "description": "Dataset split.\n\n``eval`` holds held-out scenarios on the training topology; ``eval_utopo``\nholds held-out scenarios on the unseen topology variant. ``cal`` is used\nonly for threshold selection, calibration and model selection and is never\nreported as a result.",
+      "enum": [
+        "train",
+        "cal",
+        "eval",
+        "eval_utopo",
+        "dev",
+        "fixture"
+      ],
+      "title": "Split",
+      "type": "string"
+    },
+    "TerminationReason": {
+      "description": "Why an episode ended.",
+      "enum": [
+        "objective_reached",
+        "incident_resolved",
+        "max_steps"
+      ],
+      "title": "TerminationReason",
+      "type": "string"
+    },
+    "UncertaintySummary": {
+      "additionalProperties": false,
+      "description": "Uncertainty activity summary; null unless an uncertainty policy ran.",
+      "properties": {
+        "containment_allowed_count": {
+          "minimum": 0,
+          "title": "Containment Allowed Count",
+          "type": "integer"
+        },
+        "deferral_count": {
+          "minimum": 0,
+          "title": "Deferral Count",
+          "type": "integer"
+        },
+        "evidence_request_count": {
+          "minimum": 0,
+          "title": "Evidence Request Count",
+          "type": "integer"
+        },
+        "mean_uncertainty": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mean Uncertainty"
+        }
+      },
+      "required": [
+        "deferral_count",
+        "evidence_request_count",
+        "containment_allowed_count"
+      ],
+      "title": "UncertaintySummary",
+      "type": "object"
+    }
+  },
+  "$id": "urn:cyberswarm:schema:EpisodeResult:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Post-hoc result of one episode (CONTRACTS section 11.1).",
+  "properties": {
+    "counts": {
+      "$ref": "#/$defs/Counts"
+    },
+    "episode_id": {
+      "maxLength": 120,
+      "pattern": "^ep-[a-z0-9]+(?:-[a-z0-9]+)*-s[0-9]+$",
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "outcome": {
+      "$ref": "#/$defs/OutcomeSummary"
+    },
+    "policy_id": {
+      "pattern": "^pol-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Policy Id",
+      "type": "string"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "representation": {
+      "$ref": "#/$defs/Representation"
+    },
+    "reward": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RewardSummary"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "run_id": {
+      "pattern": "^run-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "scenario_id": {
+      "pattern": "^scn-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Scenario Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "seed": {
+      "minimum": 0,
+      "title": "Seed",
+      "type": "integer"
+    },
+    "simulator_kind": {
+      "$ref": "#/$defs/SimulatorKind"
+    },
+    "split": {
+      "$ref": "#/$defs/Split"
+    },
+    "steps_taken": {
+      "minimum": 0,
+      "title": "Steps Taken",
+      "type": "integer"
+    },
+    "terminated": {
+      "title": "Terminated",
+      "type": "boolean"
+    },
+    "termination_reason": {
+      "$ref": "#/$defs/TerminationReason"
+    },
+    "truncated": {
+      "title": "Truncated",
+      "type": "boolean"
+    },
+    "uncertainty_summary": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/UncertaintySummary"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "visibility": {
+      "const": "post_hoc_evaluation",
+      "default": "post_hoc_evaluation",
+      "title": "Visibility",
+      "type": "string"
+    }
+  },
+  "required": [
+    "episode_id",
+    "run_id",
+    "scenario_id",
+    "seed",
+    "policy_id",
+    "representation",
+    "split",
+    "simulator_kind",
+    "steps_taken",
+    "terminated",
+    "truncated",
+    "termination_reason",
+    "counts",
+    "reward",
+    "outcome",
+    "uncertainty_summary",
+    "provenance"
+  ],
+  "title": "EpisodeResult",
+  "type": "object"
+}

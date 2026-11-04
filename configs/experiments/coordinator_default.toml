@@ -1,0 +1,30 @@
+# Default defense-coordinator configuration (DESIGN 4.8, CONTRACTS 8.6, AD-21).
+#
+# The coordinator is the single safety boundary: it is the only validator of
+# proposals and the only caller of the simulator's public apply_action. This
+# file pins the allowlist it enforces and the per-step high-impact budget. It is
+# frozen before any evaluation run and recorded through `allowlist_id` on every
+# ValidationResult, so a run always names the allowlist that produced it.
+#
+# `allowlist` is the explicit, abstract-only action vocabulary (CONTRACTS 6).
+# Every entry is one of the eight simulator-only action kinds; nothing here can
+# name a real address, command or payload. Removing a kind makes the coordinator
+# reject that kind with ACTION_NOT_ALLOWLISTED.
+
+allowlist_id = "allowlist-default-v1"
+
+# More than this many high-impact actions (isolate_node, restore_node) accepted
+# in one step triggers HIGH_IMPACT_BUDGET_EXCEEDED on the surplus proposals.
+max_high_impact_per_step = 1
+
+# The eight-action vocabulary, abstract simulator state transitions only.
+allowlist = [
+    "no_op",
+    "monitor_node",
+    "investigate_node",
+    "request_evidence",
+    "rate_limit_node",
+    "quarantine_node",
+    "isolate_node",
+    "restore_node",
+]

@@ -1,0 +1,90 @@
+{
+  "$defs": {
+    "DetectionNode": {
+      "additionalProperties": false,
+      "description": "Per-node detection output (CONTRACTS section 8.4).",
+      "properties": {
+        "alerted": {
+          "title": "Alerted",
+          "type": "boolean"
+        },
+        "node_id": {
+          "maxLength": 40,
+          "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "title": "Node Id",
+          "type": "string"
+        },
+        "suspicion": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Suspicion",
+          "type": "number"
+        }
+      },
+      "required": [
+        "node_id",
+        "suspicion",
+        "alerted"
+      ],
+      "title": "DetectionNode",
+      "type": "object"
+    }
+  },
+  "$id": "urn:cyberswarm:schema:DetectionSummary:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Output of the deterministic detection role (CONTRACTS section 8.4).",
+  "properties": {
+    "agent_id": {
+      "pattern": "^agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Agent Id",
+      "type": "string"
+    },
+    "detection_id": {
+      "pattern": "^det-[0-9]{4}-agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Detection Id",
+      "type": "string"
+    },
+    "episode_id": {
+      "maxLength": 120,
+      "pattern": "^ep-[a-z0-9]+(?:-[a-z0-9]+)*-s[0-9]+$",
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/DetectionNode"
+      },
+      "title": "Nodes",
+      "type": "array"
+    },
+    "producer": {
+      "maxLength": 160,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9 .,()_-]+$",
+      "title": "Producer",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "step": {
+      "maximum": 10000,
+      "minimum": 0,
+      "title": "Step",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "detection_id",
+    "episode_id",
+    "step",
+    "agent_id",
+    "producer"
+  ],
+  "title": "DetectionSummary",
+  "type": "object"
+}

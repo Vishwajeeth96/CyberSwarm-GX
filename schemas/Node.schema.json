@@ -1,0 +1,67 @@
+{
+  "$defs": {
+    "NodeType": {
+      "description": "Abstract node role.",
+      "enum": [
+        "gateway",
+        "web",
+        "app",
+        "database",
+        "auth",
+        "file",
+        "workstation"
+      ],
+      "title": "NodeType",
+      "type": "string"
+    }
+  },
+  "$id": "urn:cyberswarm:schema:Node:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "A network node (CONTRACTS section 7.1).",
+  "properties": {
+    "criticality": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Criticality",
+      "type": "number"
+    },
+    "label": {
+      "anyOf": [
+        {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9 .,()_-]+$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Label"
+    },
+    "node_id": {
+      "maxLength": 40,
+      "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Node Id",
+      "type": "string"
+    },
+    "node_type": {
+      "$ref": "#/$defs/NodeType"
+    },
+    "zone_id": {
+      "pattern": "^zone-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Zone Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "node_id",
+    "node_type",
+    "zone_id",
+    "criticality"
+  ],
+  "title": "Node",
+  "type": "object"
+}

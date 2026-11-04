@@ -1,0 +1,174 @@
+{
+  "$defs": {
+    "AlertTruth": {
+      "additionalProperties": false,
+      "description": "Whether one ``alert_raised`` event of this step was a true positive.",
+      "properties": {
+        "event_id": {
+          "pattern": "^(?:evt|cev)-[0-9]{6}$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "true_positive": {
+          "title": "True Positive",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "event_id",
+        "true_positive"
+      ],
+      "title": "AlertTruth",
+      "type": "object"
+    },
+    "CompromiseCause": {
+      "description": "Why a node became compromised during a step.",
+      "enum": [
+        "initial_entry",
+        "propagation"
+      ],
+      "title": "CompromiseCause",
+      "type": "string"
+    },
+    "GroundTruthNode": {
+      "additionalProperties": false,
+      "description": "Hidden per-node truth (CONTRACTS section 9).",
+      "properties": {
+        "compromised": {
+          "title": "Compromised",
+          "type": "boolean"
+        },
+        "contained": {
+          "title": "Contained",
+          "type": "boolean"
+        },
+        "defense_availability": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Defense Availability",
+          "type": "number"
+        },
+        "node_id": {
+          "maxLength": 40,
+          "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "title": "Node Id",
+          "type": "string"
+        },
+        "service_availability": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Service Availability",
+          "type": "number"
+        },
+        "status": {
+          "$ref": "#/$defs/NodeStatus"
+        }
+      },
+      "required": [
+        "node_id",
+        "compromised",
+        "service_availability",
+        "defense_availability",
+        "contained",
+        "status"
+      ],
+      "title": "GroundTruthNode",
+      "type": "object"
+    },
+    "NewCompromise": {
+      "additionalProperties": false,
+      "description": "A node that became compromised during this step.",
+      "properties": {
+        "cause": {
+          "$ref": "#/$defs/CompromiseCause"
+        },
+        "node_id": {
+          "maxLength": 40,
+          "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "title": "Node Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "node_id",
+        "cause"
+      ],
+      "title": "NewCompromise",
+      "type": "object"
+    },
+    "NodeStatus": {
+      "description": "Agent-visible node status; follows from actions, not a compromise flag.",
+      "enum": [
+        "up",
+        "rate_limited",
+        "quarantined",
+        "isolated",
+        "restoring"
+      ],
+      "title": "NodeStatus",
+      "type": "string"
+    }
+  },
+  "$id": "urn:cyberswarm:schema:GroundTruthSnapshot:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Hidden truth captured at the end of a step (CONTRACTS section 9).\n\nOne record per step, captured by ``end_step()`` of that step after P4 and\nbefore P0 of the next step; ``step`` equals ``StepResult.step_closed``.",
+  "properties": {
+    "alert_truth": {
+      "items": {
+        "$ref": "#/$defs/AlertTruth"
+      },
+      "title": "Alert Truth",
+      "type": "array"
+    },
+    "episode_id": {
+      "maxLength": 120,
+      "pattern": "^ep-[a-z0-9]+(?:-[a-z0-9]+)*-s[0-9]+$",
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "incident_active": {
+      "title": "Incident Active",
+      "type": "boolean"
+    },
+    "new_compromises": {
+      "items": {
+        "$ref": "#/$defs/NewCompromise"
+      },
+      "title": "New Compromises",
+      "type": "array"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/GroundTruthNode"
+      },
+      "title": "Nodes",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "step": {
+      "maximum": 10000,
+      "minimum": 0,
+      "title": "Step",
+      "type": "integer"
+    },
+    "visibility": {
+      "const": "evaluator_only",
+      "default": "evaluator_only",
+      "title": "Visibility",
+      "type": "string"
+    }
+  },
+  "required": [
+    "episode_id",
+    "step",
+    "incident_active"
+  ],
+  "title": "GroundTruthSnapshot",
+  "type": "object"
+}

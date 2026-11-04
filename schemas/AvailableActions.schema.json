@@ -1,0 +1,167 @@
+{
+  "$defs": {
+    "ActionKind": {
+      "description": "The eight abstract defensive actions (CONTRACTS section 6).",
+      "enum": [
+        "no_op",
+        "monitor_node",
+        "investigate_node",
+        "request_evidence",
+        "rate_limit_node",
+        "quarantine_node",
+        "isolate_node",
+        "restore_node"
+      ],
+      "title": "ActionKind",
+      "type": "string"
+    },
+    "ActionParameters": {
+      "additionalProperties": false,
+      "description": "Action parameters; ``{}`` means defaults (CONTRACTS section 6).",
+      "properties": {
+        "duration_steps": {
+          "anyOf": [
+            {
+              "maximum": 5,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Duration Steps"
+        },
+        "level": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RateLimitLevel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "ActionParameters",
+      "type": "object"
+    },
+    "AvailableAction": {
+      "additionalProperties": false,
+      "description": "One action an agent may propose this step (CONTRACTS section 8.3).",
+      "properties": {
+        "action_kind": {
+          "$ref": "#/$defs/ActionKind"
+        },
+        "cost_units": {
+          "minimum": 0.0,
+          "title": "Cost Units",
+          "type": "number"
+        },
+        "high_impact": {
+          "title": "High Impact",
+          "type": "boolean"
+        },
+        "impact_class": {
+          "$ref": "#/$defs/ImpactClass"
+        },
+        "parameters": {
+          "$ref": "#/$defs/ActionParameters"
+        },
+        "target_node_id": {
+          "anyOf": [
+            {
+              "maxLength": 40,
+              "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Node Id"
+        }
+      },
+      "required": [
+        "action_kind",
+        "impact_class",
+        "high_impact",
+        "cost_units"
+      ],
+      "title": "AvailableAction",
+      "type": "object"
+    },
+    "ImpactClass": {
+      "description": "Abstract impact class of an action.",
+      "enum": [
+        "none",
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "ImpactClass",
+      "type": "string"
+    },
+    "RateLimitLevel": {
+      "description": "Allowed ``level`` parameter of ``rate_limit_node``.",
+      "enum": [
+        "light",
+        "heavy"
+      ],
+      "title": "RateLimitLevel",
+      "type": "string"
+    }
+  },
+  "$id": "urn:cyberswarm:schema:AvailableActions:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "The actions one agent may propose this step (CONTRACTS section 8.3).",
+  "properties": {
+    "actions": {
+      "items": {
+        "$ref": "#/$defs/AvailableAction"
+      },
+      "title": "Actions",
+      "type": "array"
+    },
+    "agent_id": {
+      "pattern": "^agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Agent Id",
+      "type": "string"
+    },
+    "available_actions_id": {
+      "pattern": "^avl-[0-9]{4}-agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Available Actions Id",
+      "type": "string"
+    },
+    "episode_id": {
+      "maxLength": 120,
+      "pattern": "^ep-[a-z0-9]+(?:-[a-z0-9]+)*-s[0-9]+$",
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "step": {
+      "maximum": 10000,
+      "minimum": 0,
+      "title": "Step",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "available_actions_id",
+    "episode_id",
+    "step",
+    "agent_id"
+  ],
+  "title": "AvailableActions",
+  "type": "object"
+}

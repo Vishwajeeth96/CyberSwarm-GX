@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "scenario_id": "scn-mock-lateral-cal-02",
+  "topology_id": "topo-mock-small-v1",
+  "description": "Synthetic mock calibration scenario, lateral compromise entering at node-gw-01",
+  "max_steps": 40,
+  "observation_window_steps": 5,
+  "incident": {
+    "incident_type": "propagating_compromise",
+    "entry_node_id": "node-gw-01",
+    "start_step": 3,
+    "spread_probability": 0.30
+  },
+  "observability": {
+    "alert_detect_probability": 0.35,
+    "false_alert_rate": 0.03,
+    "alert_delay_max_steps": 1,
+    "missing_value_rate": 0.05
+  },
+  "restore_duration_steps": 3,
+  "objective_node_id": "node-db-01"
+}

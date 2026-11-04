@@ -1,0 +1,210 @@
+{
+  "$defs": {
+    "ComponentStatus": {
+      "description": "Execution-derived status of a staged component.",
+      "enum": [
+        "not_run",
+        "implemented",
+        "no_go",
+        "deferred"
+      ],
+      "title": "ComponentStatus",
+      "type": "string"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "description": "Where a measured or compared record's values came from.",
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/ProvenanceKind"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9 .,()_-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "ProvenanceKind": {
+      "description": "Where a record's values came from.",
+      "enum": [
+        "fixture_synthetic",
+        "mock_simulator_run",
+        "simulator_run"
+      ],
+      "title": "ProvenanceKind",
+      "type": "string"
+    },
+    "StageComponent": {
+      "description": "The staged component a decision is about.",
+      "enum": [
+        "learned_gnn",
+        "mappo"
+      ],
+      "title": "StageComponent",
+      "type": "string"
+    },
+    "StageCriterion": {
+      "additionalProperties": false,
+      "description": "One go/no-go criterion with its measured value.",
+      "properties": {
+        "criterion_id": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9 .,()_-]+$",
+          "title": "Criterion Id",
+          "type": "string"
+        },
+        "measured": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Measured"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9 .,()_-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        },
+        "passed": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Passed"
+        },
+        "threshold": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Threshold"
+        }
+      },
+      "required": [
+        "criterion_id"
+      ],
+      "title": "StageCriterion",
+      "type": "object"
+    },
+    "StageName": {
+      "description": "The workflow stage that decided.",
+      "enum": [
+        "S7",
+        "S8"
+      ],
+      "title": "StageName",
+      "type": "string"
+    }
+  },
+  "$id": "urn:cyberswarm:schema:StageDecision:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Recorded go, no-go or deferral of a staged component (CONTRACTS 11.9).",
+  "properties": {
+    "component": {
+      "$ref": "#/$defs/StageComponent"
+    },
+    "criteria": {
+      "items": {
+        "$ref": "#/$defs/StageCriterion"
+      },
+      "title": "Criteria",
+      "type": "array"
+    },
+    "decision_id": {
+      "pattern": "^dec-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Decision Id",
+      "type": "string"
+    },
+    "evidence_paths": {
+      "items": {
+        "maxLength": 200,
+        "minLength": 1,
+        "type": "string"
+      },
+      "title": "Evidence Paths",
+      "type": "array"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "reason": {
+      "anyOf": [
+        {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9 .,()_-]+$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Reason"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "stage": {
+      "$ref": "#/$defs/StageName"
+    },
+    "state": {
+      "$ref": "#/$defs/ComponentStatus"
+    }
+  },
+  "required": [
+    "decision_id",
+    "component",
+    "stage",
+    "state",
+    "reason",
+    "provenance"
+  ],
+  "title": "StageDecision",
+  "type": "object"
+}

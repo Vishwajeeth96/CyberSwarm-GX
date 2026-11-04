@@ -1,0 +1,47 @@
+{
+  "$defs": {
+    "EdgeType": {
+      "description": "Directed edge kind.",
+      "enum": [
+        "network_link",
+        "service_dependency"
+      ],
+      "title": "EdgeType",
+      "type": "string"
+    }
+  },
+  "$id": "urn:cyberswarm:schema:Edge:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "A directed network edge (CONTRACTS section 7.2).",
+  "properties": {
+    "edge_id": {
+      "pattern": "^edge-[0-9]{3,4}$",
+      "title": "Edge Id",
+      "type": "string"
+    },
+    "edge_type": {
+      "$ref": "#/$defs/EdgeType"
+    },
+    "source": {
+      "maxLength": 40,
+      "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Source",
+      "type": "string"
+    },
+    "target": {
+      "maxLength": 40,
+      "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Target",
+      "type": "string"
+    }
+  },
+  "required": [
+    "edge_id",
+    "source",
+    "target",
+    "edge_type"
+  ],
+  "title": "Edge",
+  "type": "object"
+}

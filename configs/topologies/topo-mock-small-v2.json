@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "topology_id": "topo-mock-small-v2",
+  "nodes": [
+    {"node_id": "node-app-01", "node_type": "app", "zone_id": "zone-core", "criticality": 0.7, "label": "Application server"},
+    {"node_id": "node-auth-01", "node_type": "auth", "zone_id": "zone-core", "criticality": 0.8, "label": "Authentication service"},
+    {"node_id": "node-db-01", "node_type": "database", "zone_id": "zone-core", "criticality": 1.0, "label": "Primary database"},
+    {"node_id": "node-file-01", "node_type": "file", "zone_id": "zone-core", "criticality": 0.8, "label": "File server"},
+    {"node_id": "node-gw-01", "node_type": "gateway", "zone_id": "zone-dmz", "criticality": 0.6, "label": "Edge gateway"},
+    {"node_id": "node-web-01", "node_type": "web", "zone_id": "zone-dmz", "criticality": 0.5, "label": "Public web server"},
+    {"node_id": "node-web-02", "node_type": "web", "zone_id": "zone-dmz", "criticality": 0.6, "label": "Secondary web server"},
+    {"node_id": "node-ws-01", "node_type": "workstation", "zone_id": "zone-core", "criticality": 0.4, "label": "Operator workstation"}
+  ],
+  "edges": [
+    {"edge_id": "edge-001", "source": "node-app-01", "target": "node-auth-01", "edge_type": "network_link"},
+    {"edge_id": "edge-002", "source": "node-app-01", "target": "node-db-01", "edge_type": "network_link"},
+    {"edge_id": "edge-003", "source": "node-app-01", "target": "node-db-01", "edge_type": "service_dependency"},
+    {"edge_id": "edge-004", "source": "node-app-01", "target": "node-web-01", "edge_type": "network_link"},
+    {"edge_id": "edge-005", "source": "node-app-01", "target": "node-ws-01", "edge_type": "network_link"},
+    {"edge_id": "edge-006", "source": "node-auth-01", "target": "node-app-01", "edge_type": "network_link"},
+    {"edge_id": "edge-007", "source": "node-db-01", "target": "node-app-01", "edge_type": "network_link"},
+    {"edge_id": "edge-008", "source": "node-db-01", "target": "node-auth-01", "edge_type": "service_dependency"},
+    {"edge_id": "edge-009", "source": "node-db-01", "target": "node-file-01", "edge_type": "network_link"},
+    {"edge_id": "edge-010", "source": "node-db-01", "target": "node-web-02", "edge_type": "network_link"},
+    {"edge_id": "edge-011", "source": "node-file-01", "target": "node-db-01", "edge_type": "network_link"},
+    {"edge_id": "edge-012", "source": "node-gw-01", "target": "node-web-01", "edge_type": "network_link"},
+    {"edge_id": "edge-013", "source": "node-gw-01", "target": "node-web-02", "edge_type": "network_link"},
+    {"edge_id": "edge-014", "source": "node-web-01", "target": "node-app-01", "edge_type": "network_link"},
+    {"edge_id": "edge-015", "source": "node-web-01", "target": "node-app-01", "edge_type": "service_dependency"},
+    {"edge_id": "edge-016", "source": "node-web-01", "target": "node-gw-01", "edge_type": "network_link"},
+    {"edge_id": "edge-017", "source": "node-web-02", "target": "node-db-01", "edge_type": "network_link"},
+    {"edge_id": "edge-018", "source": "node-web-02", "target": "node-gw-01", "edge_type": "network_link"},
+    {"edge_id": "edge-019", "source": "node-ws-01", "target": "node-app-01", "edge_type": "network_link"}
+  ]
+}

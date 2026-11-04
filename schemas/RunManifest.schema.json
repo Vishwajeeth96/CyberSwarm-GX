@@ -1,0 +1,298 @@
+{
+  "$defs": {
+    "ComponentStatus": {
+      "description": "Execution-derived status of a staged component.",
+      "enum": [
+        "not_run",
+        "implemented",
+        "no_go",
+        "deferred"
+      ],
+      "title": "ComponentStatus",
+      "type": "string"
+    },
+    "EpisodeEntry": {
+      "additionalProperties": false,
+      "description": "One episode entry of a run manifest.",
+      "properties": {
+        "directory": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Directory",
+          "type": "string"
+        },
+        "episode_id": {
+          "maxLength": 120,
+          "pattern": "^ep-[a-z0-9]+(?:-[a-z0-9]+)*-s[0-9]+$",
+          "title": "Episode Id",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/EpisodeStatus"
+        }
+      },
+      "required": [
+        "episode_id",
+        "directory",
+        "status"
+      ],
+      "title": "EpisodeEntry",
+      "type": "object"
+    },
+    "EpisodeStatus": {
+      "description": "Whether an episode completed or aborted.",
+      "enum": [
+        "completed",
+        "aborted"
+      ],
+      "title": "EpisodeStatus",
+      "type": "string"
+    },
+    "FileEntry": {
+      "additionalProperties": false,
+      "description": "One record file of a run manifest.",
+      "properties": {
+        "count": {
+          "minimum": 0,
+          "title": "Count",
+          "type": "integer"
+        },
+        "path": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "record_type": {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9 .,()_-]+$",
+          "title": "Record Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "record_type",
+        "count"
+      ],
+      "title": "FileEntry",
+      "type": "object"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "description": "Where a measured or compared record's values came from.",
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/ProvenanceKind"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9 .,()_-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "ProvenanceKind": {
+      "description": "Where a record's values came from.",
+      "enum": [
+        "fixture_synthetic",
+        "mock_simulator_run",
+        "simulator_run"
+      ],
+      "title": "ProvenanceKind",
+      "type": "string"
+    },
+    "SimulatorKind": {
+      "description": "Which simulator produced a run. A mock run is never labelled a result.",
+      "enum": [
+        "mock",
+        "simulator",
+        "fixture"
+      ],
+      "title": "SimulatorKind",
+      "type": "string"
+    },
+    "StatusBlock": {
+      "additionalProperties": false,
+      "description": "The IPPO, deferred-stage and learned-GNN status entries.",
+      "properties": {
+        "ippo": {
+          "$ref": "#/$defs/StatusEntry"
+        },
+        "learned_gnn": {
+          "$ref": "#/$defs/StatusEntry"
+        },
+        "mappo": {
+          "$ref": "#/$defs/StatusEntry"
+        }
+      },
+      "required": [
+        "ippo",
+        "mappo",
+        "learned_gnn"
+      ],
+      "title": "StatusBlock",
+      "type": "object"
+    },
+    "StatusEntry": {
+      "additionalProperties": false,
+      "description": "Status of one staged component in a run manifest.",
+      "properties": {
+        "decision_id": {
+          "anyOf": [
+            {
+              "pattern": "^dec-[a-z0-9]+(?:-[a-z0-9]+)*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Decision Id"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9 .,()_-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "state": {
+          "$ref": "#/$defs/ComponentStatus"
+        }
+      },
+      "required": [
+        "state"
+      ],
+      "title": "StatusEntry",
+      "type": "object"
+    }
+  },
+  "$id": "urn:cyberswarm:schema:RunManifest:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Index of one run directory (CONTRACTS section 11.6).",
+  "properties": {
+    "config_digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Config Digest",
+      "type": "string"
+    },
+    "episodes": {
+      "items": {
+        "$ref": "#/$defs/EpisodeEntry"
+      },
+      "title": "Episodes",
+      "type": "array"
+    },
+    "files": {
+      "items": {
+        "$ref": "#/$defs/FileEntry"
+      },
+      "title": "Files",
+      "type": "array"
+    },
+    "graph_model_outputs": {
+      "enum": [
+        "not_computed",
+        "present"
+      ],
+      "title": "Graph Model Outputs",
+      "type": "string"
+    },
+    "package_version": {
+      "maxLength": 160,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9 .,()_-]+$",
+      "title": "Package Version",
+      "type": "string"
+    },
+    "policy_ids": {
+      "items": {
+        "pattern": "^pol-[a-z0-9]+(?:-[a-z0-9]+)*$",
+        "type": "string"
+      },
+      "title": "Policy Ids",
+      "type": "array"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "run_id": {
+      "pattern": "^run-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "scenario_ids": {
+      "items": {
+        "pattern": "^scn-[a-z0-9]+(?:-[a-z0-9]+)*$",
+        "type": "string"
+      },
+      "title": "Scenario Ids",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "seeds": {
+      "items": {
+        "type": "integer"
+      },
+      "title": "Seeds",
+      "type": "array"
+    },
+    "simulator_kind": {
+      "$ref": "#/$defs/SimulatorKind"
+    },
+    "status": {
+      "$ref": "#/$defs/StatusBlock"
+    },
+    "topology_ids": {
+      "items": {
+        "pattern": "^topo-[a-z0-9]+(?:-[a-z0-9]+)*-v[0-9]+$",
+        "type": "string"
+      },
+      "title": "Topology Ids",
+      "type": "array"
+    }
+  },
+  "required": [
+    "run_id",
+    "simulator_kind",
+    "config_digest",
+    "package_version",
+    "graph_model_outputs",
+    "status",
+    "provenance"
+  ],
+  "title": "RunManifest",
+  "type": "object"
+}

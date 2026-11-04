@@ -1,0 +1,25 @@
+# Default reward weights for CyberSwarm (docs/RL_IMPLEMENTATION.md section 4).
+#
+# These are starting points chosen for the reasons in RL_IMPLEMENTATION 4.2,
+# before any experiment; they are not tuned to make any method win. The file is
+# frozen before any evaluation run and recorded as `weights_id` in every
+# EpisodeResult, so a run always names the weights that produced it. Changing a
+# weight after seeing results is recorded as a new `weights_id`.
+#
+# `d_max` and `false_isolation_base` are shape parameters, not linear weights:
+# changing them needs a new run (post-hoc reweighting cannot recover them).
+
+weights_id = "reward-default-v1"
+sharing = "team"            # shared team reward; "zone_local" is an ablation only
+d_max = 20                  # response-delay cap, in steps
+false_isolation_base = 0.5  # floor added to criticality for a wrong containment
+
+[weights]
+# Non-negative magnitudes; the sign of each term is fixed in the reward model.
+attack_impact = 1.0         # one fully critical node compromised for one step costs 1.0
+response_delay = 0.5        # at most 0.5 per step while an incident stays uncontained
+containment = 3.0           # reward for justified containment, earned once per node
+false_isolation = 2.0       # wrong containment; floor is 0.5 * 2.0 = 1.0
+healthy_disruption = 0.5    # defender-induced service loss (defense_availability only)
+investigation_cost = 0.05   # investigate once = 0.05; request deep evidence = 0.15
+invalid_action = 0.1        # masked-action substitution guard; zero for masked policies

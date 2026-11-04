@@ -1,0 +1,262 @@
+{
+  "verdict": "CHANGES_REQUESTED",
+  "findings": [
+    {
+      "id": 1,
+      "severity": "HIGH",
+      "title": "Learned GNN decided as design-time NO-GO; stage-9 go/no-go not planned",
+      "where": "ARCHITECTURE s3,s15,s16; DECISIONS D-19, AD-11; RL_IMPLEMENTATION s1,s8,s9; CONTRACTS s10, s10.3, s11.6 (learned_gnn const); DESIGN s1 rule 1, s4.13, S6, DC-17, test_status_honesty; design-notes.md",
+      "problem": "Addendum 2 s1 requires the decision at stage 9 after IPPO, uncertainty and evaluation, with task, architectures, inputs, go/no-go criteria and matched ablation specified now. Design pre-decides NO-GO, uses non-user reopening conditions, hard-codes status in the manifest schema, and has no GNN stage.",
+      "fix": "Rewrite D-19/AD-11 as staged, decided at a GNN stage after evaluation. Specify task (node suspicion scoring on train-split labels; optional embeddings for IPPO), SageDense vs GatDense on GraphBatch in plain PyTorch, numeric go criteria, evidence-required no-go, and the conv vs graph_features vs learned_embedding ablation on eval and unseen topology. Change RunManifest.status to {not_run, implemented, no_go} with reason; remove consts and token ban; replace status test with status-equals-execution test."
+    },
+    {
+      "id": 2,
+      "severity": "HIGH",
+      "title": "MAPPO decided as deferred; blockers not concrete; required tests incomplete",
+      "where": "ARCHITECTURE s1,s6.5,s15; DECISIONS AD-10, AD-07, D-06; RL_IMPLEMENTATION s1,s6,s9,s10; CONTRACTS s11.6; DESIGN s1 rule 1, s3.2 mappo token ban, s4.13, S6, DC-18, test_status_honesty",
+      "problem": "Addendum 2 s2 says MAPPO is feasible and is a stage after IPPO; defer only on a concrete evidenced blocker. B1-B4 are sequencing, work items or a user confirmation the addendum already settled. Token ban, const manifest value and no-mappo.py test make implementation fail repo tests. D-06 conflicts with AD-10. Missing tests: actor local-obs only, global vs local critic input, shared team reward in advantages, checkpoint round trip, contract-valid inference.",
+      "fix": "Add a MAPPO stage after the GNN stage executing W1-W7; defer only with evidence in the stage report. Delete B3 and AD-07 confirmation clause; reclassify B1/B2/B4. Replace token ban and no-file test with status-equals-execution test. Add M-9..M-13 (actor input own obs only with critic patched to raise; critic input n*D vs IPPO D; advantages from StepScore.total; checkpoint round trip incl. actors-only load; inference proposals pass real coordinator)."
+    },
+    {
+      "id": 3,
+      "severity": "HIGH",
+      "title": "No unseen-topology evaluation",
+      "where": "DESIGN s5 (one topology), s5.2, splits.toml; CONTRACTS Split enum; RL_IMPLEMENTATION s9; DESIGN s4.10 load_checkpoint(expect_topology)",
+      "problem": "Addendum 2 s3 requires a held-out topology variant (same node ids and zones, different link/dependency edges and criticality) never used in training or calibration, with metrics reported separately. Nothing exists; checkpoint loading may refuse a different topology id.",
+      "fix": "Add topo-mock-small-v2, scenarios scn-mock-lateral-utopo-01/-02, split eval_utopo (add to Split enum before schema 1.0 ships), disjointness test including topology ids, checkpoint compatibility by node ids + ActionTable digest, separate reporting per split in metrics and comparisons, smoke and bundle coverage, tests (v1 checkpoint runs on v2, features differ, no v2 in train/cal)."
+    },
+    {
+      "id": 4,
+      "severity": "HIGH",
+      "title": "Ranking metric (top-1, MRR of incident-origin node) missing; graph-feature baseline emits no per-node scores",
+      "where": "CONTRACTS s11.2; RL_IMPLEMENTATION; DESIGN s4.9; ARCHITECTURE s3, s16 ('not an evaluated metric'); DECISIONS AD-01 decision 3",
+      "problem": "Addendum 2 s4 requires top-1 and MRR for every per-node suspicion producer, from evaluator-only truth, labelled as predicted-suspicion ranking. Not defined anywhere; ARCHITECTURE says the opposite; the graph baseline's score is computed inside the policy and never recorded.",
+      "fix": "Add NodeScoreRecord (scorer_id, scorer_kind, per-node score) and node_scores.jsonl; add origin_rank_top1 and origin_mrr metrics and EpisodeResult.outcome fields per scorer; define steps from first_true_alert_step to containment_step per agent observing the entry node, worst-rank tie rule, null when undefined; add the 'not a root-cause finding' label; correct ARCHITECTURE and AD-01; add unit tests."
+    },
+    {
+      "id": 5,
+      "severity": "MEDIUM",
+      "title": "Graph requirement still treated as an open question needing user confirmation",
+      "where": "DECISIONS AD-01 supersession note, AD-15, s5 item 9, s7 item 10; DESIGN s1 rule 2, s12.2 last row, s12.3 item 1; RESEARCH s4 item 18; research-delta.md s6b",
+      "problem": "DELTA says required and user-confirmed; AD-01 says confirmed while AD-15 asks the user to confirm; removal list frames required infrastructure as removable. Addendum 1 gate forbids stale or contradictory entries.",
+      "fix": "Close AD-15 as decided by DELTA/BRIEF; delete the hedges, open items, risk row and removal list; keep converter sharing as an architecture fact."
+    },
+    {
+      "id": 6,
+      "severity": "MEDIUM",
+      "title": "Stage order deviates from DELTA mandatory order while DESIGN rule 3 says it does not",
+      "where": "DESIGN s11.1, s1 rule 3; ARCHITECTURE s10.4",
+      "problem": "Evaluator (DELTA step 8) runs as S5 before IPPO (6) and uncertainty (7); GNN and MAPPO decisions (9, 10) sit in S6 before uncertainty. No recorded exception; the project-lead prompt must preserve the DELTA order.",
+      "fix": "Reorder: IPPO (with thin run_episode/compute_outcome slice), uncertainty, evaluation/smoke, GNN, MAPPO, docs, module specs/prompts, final review; or record an approved DECISIONS exception and correct rule 3 and the prompt."
+    },
+    {
+      "id": 7,
+      "severity": "MEDIUM",
+      "title": "S3 bundles graph pipeline with engine, reward and environment; its ordering gate cannot be checked",
+      "where": "DESIGN s11.2 S3 (42 files), s11.3 S3 'Done when'",
+      "problem": "Gate says graph tests pass before any rl file exists in the commit order, but no commits are allowed; one review loop covers both subsystems.",
+      "fix": "Split into S3a (roles, graph, graph fixtures, graph_evidence) and S3b (engine, rl, reward, env); gate: src/cyberswarm/rl and engine absent when S3a is approved."
+    },
+    {
+      "id": 8,
+      "severity": "MEDIUM",
+      "title": "An S1 test depends on S5 artifacts",
+      "where": "DESIGN s9 test_fixture_consistency.py (S1), s11.3 S1 acceptance; bundle_demo created in S5",
+      "problem": "Test checks X-1..X-14 on the demo bundle that does not exist at S1; it fails or skips, hiding a missing check.",
+      "fix": "Run X-1..X-10 and X-14 in S1 on a primary mini-episode from fixture_storyboard.py; move X-11..X-13 and the bundle to an S5 test; require 0 skipped at S1."
+    },
+    {
+      "id": 9,
+      "severity": "MEDIUM",
+      "title": "Timing of ground_truth() relative to end_step() is ambiguous",
+      "where": "DESIGN s4.2 (end_step, ground_truth, step), s4.6 engine order; CONTRACTS s9; RL_IMPLEMENTATION s4.1",
+      "problem": "end_step() already advances to t+1 and applies P0 of t+1; ground_truth() 'for the current step' may return t+1 state or the closed step t. Reward, false-isolation, containment, snapshot step and outcome metrics depend on it; a real simulator could choose either and pass conformance.",
+      "fix": "end_step() captures the step-t snapshot before P0 of t+1; ground_truth() returns it with step == StepResult.step_closed until the next end_step(); termination_reason() tied to the same step; add conformance check SC-14."
+    },
+    {
+      "id": 10,
+      "severity": "MEDIUM",
+      "title": "Healthy-disruption reward term and metrics mix attack-induced and defense-induced loss",
+      "where": "DESIGN s5.3 availability model; RL_IMPLEMENTATION s4.1 healthy_disruption; CONTRACTS s11.2 healthy_services_disrupted, healthy_disruption_cost",
+      "problem": "Healthy dependents of a compromised node lose availability through the attack and are charged as healthy-service disruption; faster containment lowers a metric meant to measure defender harm. Hand computation: demo cost 2.125 includes 0.30 attack-induced.",
+      "fix": "Add defense_availability (compromise factor fixed at 1.0) to GroundTruthSnapshot; use it for healthy_disruption and the two metrics; keep attack_impact on compromise; update R-10 and demo fixture (hand value 1.75)."
+    },
+    {
+      "id": 11,
+      "severity": "MEDIUM",
+      "title": "Mock service_health is a near-deterministic compromise proxy and the rule baseline ignores it",
+      "where": "DESIGN s5.3 (x0.7 factor, noise 0.03, edge +0.15), s4.9; RL_IMPLEMENTATION s3 index 9; ARCHITECTURE s6.2",
+      "problem": "Gap of about 0.3 against noise 0.03 (about ten noise units) lets a learned policy read compromise off one input, defeating the alert/evidence/uncertainty mechanism; the baseline cannot use it, so the 'differ only in decision role' claim fails. Noise distribution undefined.",
+      "fix": "Reduce the effect (e.g. factor 0.9, noise 0.08, edge offset 0.05) or add a service_health rule to both baselines; define noise as truncated standard normal from the health_noise table; add a mock test bounding AUROC of a service_health threshold."
+    },
+    {
+      "id": 12,
+      "severity": "MEDIUM",
+      "title": "visible_to specified only for alerts",
+      "where": "DESIGN s5.3 step 4; CONTRACTS s8.1; RL_IMPLEMENTATION s2.5",
+      "problem": "No rule for action_applied, investigation_result, node_status_changed, restore_completed, episode_started/ended, recovery events; action_applied carries agent_id and could expose another agent's actions, contradicting s2.5. Conformance cannot test it.",
+      "fix": "Add a visibility table (all agents for lifecycle events; zone agent plus adjacent-boundary agents for alerts/status/restore; acting agent only for action_applied and investigation_result; zone agent for recovery events) and conformance check SC-15."
+    },
+    {
+      "id": 13,
+      "severity": "MEDIUM",
+      "title": "Recovery-verification rule undefined",
+      "where": "ARCHITECTURE s5 row 17; DESIGN s4.8 RecoveryVerifier, s8.1; CONTRACTS s8.1",
+      "problem": "No definition of what yields recovery_verified or recovery_failed, which executions are tracked, null handling, visibility or timeout; the test file has nothing to assert.",
+      "fix": "Track restore_node only; arm at restore_completed at step s; verify when window consecutive steps show status up and non-null service_health >= health_min (null resets streak); fail after verify_timeout_steps (default 6) or if restore_completed never arrives within restore_duration_steps+2; define ids and visible_to; add four tests."
+    },
+    {
+      "id": 14,
+      "severity": "MEDIUM",
+      "title": "Coordinator reason-code dependency rule and id assignment order ambiguous; storyboard contradicts the stated rule",
+      "where": "CONTRACTS s8.6 and examples; DESIGN s8.1 storyboard step 6",
+      "problem": "'Dependent checks are skipped' is not defined; the rejected storyboard proposal would also fail ACTION_NOT_AVAILABLE but lists one code; ascending agent_id processing puts agent-core first but examples give agent-dmz the lower ids.",
+      "fix": "Add a check-dependency table; counters assigned in processing order (ascending agent_id); regenerate examples."
+    },
+    {
+      "id": 15,
+      "severity": "MEDIUM",
+      "title": "Three conflicting lists of who may import evaluator-only data; calibration module is on none",
+      "where": "CONTRACTS s9; ARCHITECTURE s9; DESIGN s3.2; RL_IMPLEMENTATION s7.4; DESIGN s4.11",
+      "problem": "uncertainty.calibration needs ground truth for correctness labels but may not import it under any list.",
+      "fix": "Single list in DESIGN s3.2 referenced by the other two; add evaluation.calibration_labels(proposals, truth) -> (u, correct) and make uncertainty.calibration take arrays (or move calibration into evaluation); extend boundary test."
+    },
+    {
+      "id": 16,
+      "severity": "MEDIUM",
+      "title": "IPPO training CLI violates package import rules",
+      "where": "DESIGN s3.2 marl imports, s4.10 marl/train.py, S6 acceptance, s12.1",
+      "problem": "marl may not import mock or coordinator, but a training command must build them; the boundary test fails or needs an unwritten exception.",
+      "fix": "Move the CLI to runner/train_ippo.py; keep IPPOTrainer(env, config, out_dir) in marl; update tree and acceptance commands."
+    },
+    {
+      "id": 17,
+      "severity": "MEDIUM",
+      "title": "Aggregation over training seeds and list of comparisons undefined",
+      "where": "RL_IMPLEMENTATION s9; DESIGN s6 eval_default.toml; CONTRACTS s11.2, s11.3",
+      "problem": "Episodes from five differently seeded networks are not samples of one policy; no record holds a training-seed aggregate; which arms are compared (conv vs graph, ua vs control, etc.) is implied, not listed.",
+      "fix": "Add policy_family_id and training_seed to EvaluationMetrics; add AggregateMetrics (unit = training seed); enumerate ComparisonRecord pairs on eval and eval_utopo; state failed runs are kept and no tuning uses eval or eval_utopo."
+    },
+    {
+      "id": 18,
+      "severity": "MEDIUM",
+      "title": "Rule baseline can leave a contained node uncleared indefinitely",
+      "where": "DESIGN s4.9 rules 2a-2e; evidence expiry s5.3",
+      "problem": "Contained node with evidence null, 1 or 2 matches no rule; baseline ends in no_op, node stays compromised to truncation; handicaps every comparison.",
+      "fix": "Add rule 2f: investigate_node (cooldown) else request_evidence for contained nodes with non-decisive evidence; same in graph variant; add test reaching incident_resolved."
+    },
+    {
+      "id": 19,
+      "severity": "MEDIUM",
+      "title": "ShortText admits IP literals and path-like strings",
+      "where": "CONTRACTS C8 and fields rationale_text, label, description, note, message",
+      "problem": "Promise of no real commands or IPs anywhere in the schema is not enforced for text fields: '10.0.0.5', 'rm -rf /', '../etc/passwd' validate.",
+      "fix": "Restrict to [A-Za-z0-9 .,()_-]; reject dotted quads, '..' and a leading '-'; add two invalid fixtures."
+    },
+    {
+      "id": 20,
+      "severity": "MEDIUM",
+      "title": "Cross-check matrix omits several interfaces; completeness proof checks only records",
+      "where": "DESIGN s10, s10.1",
+      "problem": "No rows for engine API, CoordinatorPort, Recorder, ObservationEncoder/ActionTable, EpisodeTraceView/EpisodeRecordSet, ProposalFeedback, checkpoint.json, training_log.jsonl or new items from findings 1-4; e_min defined three times despite 'no duplicates' claim.",
+      "fix": "Add rows with producer/consumer/schema/fixture/test/stage; give checkpoint.json and training log small pydantic models; define e_min once; extend the proof to Protocols and file names."
+    },
+    {
+      "id": 21,
+      "severity": "MEDIUM",
+      "title": "Shared configs and docs contain machine-specific absolute paths",
+      "where": "CONTRACTS C1, s2; DESIGN s6 smoke.toml output_dir, s7.1, s11.3, s12.1",
+      "problem": "Raksha and Mayukh work on other machines; committed configs and quickstart commands naming /Users/guru fail for them.",
+      "fix": "Use repo-relative paths resolved against the repository root; keep absolute paths only in step prompts."
+    },
+    {
+      "id": 22,
+      "severity": "NIT",
+      "title": "Missing documentation examples for Topology, ActionSpec, ProposalFeedback, UncertaintyInfo",
+      "where": "CONTRACTS",
+      "problem": "BRIEF asks for an example per schema.",
+      "fix": "Add four json contract= examples."
+    },
+    {
+      "id": 23,
+      "severity": "NIT",
+      "title": "Name mismatches between documents",
+      "where": "ARCHITECTURE s5, s4.1; DESIGN s4; CONTRACTS s11.4",
+      "problem": "RewardModel.compute vs StepScorer.score; calibrate vs build_report; dependency diagram order; ErrorRecord.component lacks engine, roles, mock.",
+      "fix": "Align names; extend the enum."
+    },
+    {
+      "id": 24,
+      "severity": "NIT",
+      "title": "Graph-record edge cases unspecified",
+      "where": "CONTRACTS s10.1, s10.2, s7.3",
+      "problem": "max_event_step with no events; mask for features 1-3 defaults; degree_norm divides by N-1 with N=1 allowed; diameter on disconnected graph.",
+      "fix": "Make max_event_step nullable; state mask rule; require N>=2 and connected link graph."
+    },
+    {
+      "id": 25,
+      "severity": "NIT",
+      "title": "state_digest() of full hidden state on the agent-facing Simulator Protocol",
+      "where": "DESIGN s4.2",
+      "problem": "Hash cannot be inverted but its changes reveal hidden-state change.",
+      "fix": "Move to an IntegrityAccessor Protocol used by coordinator and engine only."
+    },
+    {
+      "id": 26,
+      "severity": "NIT",
+      "title": "Example ids do not follow the storyboard counters",
+      "where": "CONTRACTS s8.5-s8.7 examples; DESIGN s8.1",
+      "problem": "Step-5 proposals should be prop-000011/12 with two agents; rejected example at step 5 vs storyboard step 6.",
+      "fix": "Regenerate examples from the storyboard."
+    },
+    {
+      "id": 27,
+      "severity": "NIT",
+      "title": "reset(seed=None) raises ValueError",
+      "where": "DESIGN s4.7",
+      "problem": "PettingZoo parallel_api_test calls reset() without a seed.",
+      "fix": "Derive a documented default seed or state the API test is not used."
+    },
+    {
+      "id": 28,
+      "severity": "NIT",
+      "title": "Disk-space guard partial; stale figures",
+      "where": "DESIGN s1 rule 8, S1 acceptance; DECISIONS s1; RESEARCH; research-delta.md",
+      "problem": "One measurement instead of two; the rl group bundles torch with small gymnasium and pettingzoo; 650 MiB quoted, 2.6 GiB measured.",
+      "fix": "Split torch and env groups; measure before venv and before torch; date-stamp figures."
+    },
+    {
+      "id": 29,
+      "severity": "NIT",
+      "title": "Original ARCHITECTURE draft v0.1 not preserved",
+      "where": "docs/ARCHITECTURE.md; RESEARCH Appendix A",
+      "problem": "Untracked 546-line draft rewritten in place; no copy in the repository.",
+      "fix": "Tell the user in the final report; ask whether they hold a copy."
+    },
+    {
+      "id": 30,
+      "severity": "NIT",
+      "title": "Teammate-facing artifacts arrive late",
+      "where": "DESIGN s11 (bundle in S5, MODULE specs in S9)",
+      "problem": "Raksha needs only S1-S2 outputs; Mayukh needs the bundle.",
+      "fix": "Publish the Raksha spec after S2 and the Mayukh spec with the bundle."
+    },
+    {
+      "id": 31,
+      "severity": "NIT",
+      "title": "Stale cross-references",
+      "where": "RESEARCH s4 item 1; DECISIONS AD-01 'Effect on documents', D-17 vs AD-04; RL_IMPLEMENTATION s2.2",
+      "problem": "ARCHITECTURE 'never mentions CMARL-ACD' is outdated; torch_geometric extra stated two ways; final-observation mask undefined.",
+      "fix": "Update the statements; define final-observation mask as no_op only."
+    },
+    {
+      "id": 32,
+      "severity": "NIT",
+      "title": "Calibration sample size unverified",
+      "where": "RL_IMPLEMENTATION s7.4; DESIGN s5.2",
+      "problem": "Gate needs 100 committing proposals in cal and eval; cal has 20 episodes, smoke 8; nothing estimates reachability.",
+      "fix": "After the evaluation stage, record measured committing-proposal counts and raise cal seeds if below 100."
+    }
+  ],
+  "reviewDoc": "/Users/guru/CyberSwarm-GX/.agents/tasks/cyberswarm-foundation/gates/design-review.md"
+}

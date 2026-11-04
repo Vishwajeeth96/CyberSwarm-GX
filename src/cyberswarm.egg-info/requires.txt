@@ -1,0 +1,12 @@
+pydantic<3,>=2.12
+numpy>=2.0
+networkx>=3.4
+
+[dev]
+pytest>=8
+jsonschema>=4.20
+
+[rl]
+torch>=2.5
+gymnasium<2,>=1.0
+pettingzoo>=1.24

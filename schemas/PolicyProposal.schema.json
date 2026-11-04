@@ -1,0 +1,294 @@
+{
+  "$defs": {
+    "ActionKind": {
+      "description": "The eight abstract defensive actions (CONTRACTS section 6).",
+      "enum": [
+        "no_op",
+        "monitor_node",
+        "investigate_node",
+        "request_evidence",
+        "rate_limit_node",
+        "quarantine_node",
+        "isolate_node",
+        "restore_node"
+      ],
+      "title": "ActionKind",
+      "type": "string"
+    },
+    "ActionParameters": {
+      "additionalProperties": false,
+      "description": "Action parameters; ``{}`` means defaults (CONTRACTS section 6).",
+      "properties": {
+        "duration_steps": {
+          "anyOf": [
+            {
+              "maximum": 5,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Duration Steps"
+        },
+        "level": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RateLimitLevel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "ActionParameters",
+      "type": "object"
+    },
+    "ActionSpec": {
+      "additionalProperties": false,
+      "description": "A fully specified abstract action (CONTRACTS section 6).",
+      "properties": {
+        "action_kind": {
+          "$ref": "#/$defs/ActionKind"
+        },
+        "parameters": {
+          "$ref": "#/$defs/ActionParameters"
+        },
+        "target_node_id": {
+          "anyOf": [
+            {
+              "maxLength": 40,
+              "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Node Id"
+        }
+      },
+      "required": [
+        "action_kind"
+      ],
+      "title": "ActionSpec",
+      "type": "object"
+    },
+    "RateLimitLevel": {
+      "description": "Allowed ``level`` parameter of ``rate_limit_node``.",
+      "enum": [
+        "light",
+        "heavy"
+      ],
+      "title": "RateLimitLevel",
+      "type": "string"
+    },
+    "RationaleCode": {
+      "description": "Why a policy chose an action (CONTRACTS section 8.5).",
+      "enum": [
+        "no_evidence",
+        "alerts_present",
+        "evidence_insufficient",
+        "evidence_moderate",
+        "evidence_strong",
+        "containment_ladder",
+        "recovery_after_containment",
+        "learned_policy",
+        "uncertainty_evidence_request",
+        "uncertainty_deferral",
+        "strong_evidence_override",
+        "no_action_needed"
+      ],
+      "title": "RationaleCode",
+      "type": "string"
+    },
+    "RuleOutcome": {
+      "description": "Outcome of the uncertainty rule (CONTRACTS section 8.5).",
+      "enum": [
+        "not_applied",
+        "unavailable_pass_through",
+        "pass_through",
+        "evidence_request",
+        "deferred_high_impact",
+        "containment_allowed_strong_evidence"
+      ],
+      "title": "RuleOutcome",
+      "type": "string"
+    },
+    "UncertaintyInfo": {
+      "additionalProperties": false,
+      "description": "The uncertainty signal attached to a proposal, or null when none ran.",
+      "properties": {
+        "method": {
+          "const": "normalized_entropy",
+          "default": "normalized_entropy",
+          "title": "Method",
+          "type": "string"
+        },
+        "original_action": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ActionSpec"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "rule_id": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9 .,()_-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rule Id"
+        },
+        "rule_outcome": {
+          "$ref": "#/$defs/RuleOutcome"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "required": [
+        "rule_outcome"
+      ],
+      "title": "UncertaintyInfo",
+      "type": "object"
+    }
+  },
+  "$id": "urn:cyberswarm:schema:PolicyProposal:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "One agent's requested action for a step (CONTRACTS section 8.5).",
+  "properties": {
+    "action": {
+      "$ref": "#/$defs/ActionSpec"
+    },
+    "action_probability": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Action Probability"
+    },
+    "agent_id": {
+      "pattern": "^agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Agent Id",
+      "type": "string"
+    },
+    "episode_id": {
+      "maxLength": 120,
+      "pattern": "^ep-[a-z0-9]+(?:-[a-z0-9]+)*-s[0-9]+$",
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "observation_id": {
+      "title": "Observation Id",
+      "type": "string"
+    },
+    "policy_id": {
+      "pattern": "^pol-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Policy Id",
+      "type": "string"
+    },
+    "proposal_id": {
+      "pattern": "^prop-[0-9]{6}$",
+      "title": "Proposal Id",
+      "type": "string"
+    },
+    "rationale_codes": {
+      "items": {
+        "$ref": "#/$defs/RationaleCode"
+      },
+      "title": "Rationale Codes",
+      "type": "array"
+    },
+    "rationale_text": {
+      "anyOf": [
+        {
+          "maxLength": 160,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9 .,()_-]+$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Rationale Text"
+    },
+    "role": {
+      "const": "decision",
+      "default": "decision",
+      "title": "Role",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "step": {
+      "maximum": 10000,
+      "minimum": 0,
+      "title": "Step",
+      "type": "integer"
+    },
+    "uncertainty": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/UncertaintyInfo"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "proposal_id",
+    "episode_id",
+    "step",
+    "agent_id",
+    "policy_id",
+    "observation_id",
+    "action"
+  ],
+  "title": "PolicyProposal",
+  "type": "object"
+}

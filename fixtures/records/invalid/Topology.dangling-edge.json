@@ -1,0 +1,1 @@
+{"schema_version":"1.0","topology_id":"topo-fixture-bad-v1","nodes":[{"node_id":"node-app-01","node_type":"app","zone_id":"zone-core","criticality":0.7,"label":null},{"node_id":"node-web-01","node_type":"web","zone_id":"zone-dmz","criticality":0.5,"label":null}],"edges":[{"edge_id":"edge-001","source":"node-app-01","target":"node-ghost-01","edge_type":"network_link"}]}

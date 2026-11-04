@@ -1,0 +1,148 @@
+{
+  "$defs": {
+    "Edge": {
+      "additionalProperties": false,
+      "description": "A directed network edge (CONTRACTS section 7.2).",
+      "properties": {
+        "edge_id": {
+          "pattern": "^edge-[0-9]{3,4}$",
+          "title": "Edge Id",
+          "type": "string"
+        },
+        "edge_type": {
+          "$ref": "#/$defs/EdgeType"
+        },
+        "source": {
+          "maxLength": 40,
+          "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "title": "Source",
+          "type": "string"
+        },
+        "target": {
+          "maxLength": 40,
+          "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "title": "Target",
+          "type": "string"
+        }
+      },
+      "required": [
+        "edge_id",
+        "source",
+        "target",
+        "edge_type"
+      ],
+      "title": "Edge",
+      "type": "object"
+    },
+    "EdgeType": {
+      "description": "Directed edge kind.",
+      "enum": [
+        "network_link",
+        "service_dependency"
+      ],
+      "title": "EdgeType",
+      "type": "string"
+    },
+    "Node": {
+      "additionalProperties": false,
+      "description": "A network node (CONTRACTS section 7.1).",
+      "properties": {
+        "criticality": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Criticality",
+          "type": "number"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9 .,()_-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "node_id": {
+          "maxLength": 40,
+          "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "title": "Node Id",
+          "type": "string"
+        },
+        "node_type": {
+          "$ref": "#/$defs/NodeType"
+        },
+        "zone_id": {
+          "pattern": "^zone-[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "title": "Zone Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "node_id",
+        "node_type",
+        "zone_id",
+        "criticality"
+      ],
+      "title": "Node",
+      "type": "object"
+    },
+    "NodeType": {
+      "description": "Abstract node role.",
+      "enum": [
+        "gateway",
+        "web",
+        "app",
+        "database",
+        "auth",
+        "file",
+        "workstation"
+      ],
+      "title": "NodeType",
+      "type": "string"
+    }
+  },
+  "$id": "urn:cyberswarm:schema:Topology:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "A network topology document (CONTRACTS section 7.3).\n\nStored at ``configs/topologies/<topology_id>.json`` and copied into every run\noutput. Zones, agents and authority are derived, never stored.",
+  "properties": {
+    "edges": {
+      "items": {
+        "$ref": "#/$defs/Edge"
+      },
+      "title": "Edges",
+      "type": "array"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/Node"
+      },
+      "title": "Nodes",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "topology_id": {
+      "pattern": "^topo-[a-z0-9]+(?:-[a-z0-9]+)*-v[0-9]+$",
+      "title": "Topology Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "topology_id",
+    "nodes",
+    "edges"
+  ],
+  "title": "Topology",
+  "type": "object"
+}

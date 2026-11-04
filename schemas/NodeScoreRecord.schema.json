@@ -1,0 +1,98 @@
+{
+  "$defs": {
+    "NodeScore": {
+      "additionalProperties": false,
+      "description": "One predicted suspicion score for a node.",
+      "properties": {
+        "node_id": {
+          "maxLength": 40,
+          "pattern": "^node-[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "title": "Node Id",
+          "type": "string"
+        },
+        "score": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Score",
+          "type": "number"
+        }
+      },
+      "required": [
+        "node_id",
+        "score"
+      ],
+      "title": "NodeScore",
+      "type": "object"
+    },
+    "ScorerKind": {
+      "description": "Which component produced a per-node suspicion score.",
+      "enum": [
+        "detection_rule",
+        "graph_feature_rule",
+        "learned_graph_model"
+      ],
+      "title": "ScorerKind",
+      "type": "string"
+    }
+  },
+  "$id": "urn:cyberswarm:schema:NodeScoreRecord:1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Per-node predicted suspicion, one per agent per step per scorer (8.8).\n\nA score is a predicted suspicion from agent-visible inputs; a ranking of\nscores is not a root-cause or causal finding.",
+  "properties": {
+    "agent_id": {
+      "title": "Agent Id",
+      "type": "string"
+    },
+    "episode_id": {
+      "maxLength": 120,
+      "pattern": "^ep-[a-z0-9]+(?:-[a-z0-9]+)*-s[0-9]+$",
+      "title": "Episode Id",
+      "type": "string"
+    },
+    "node_score_id": {
+      "pattern": "^nsc-[0-9]{4}-agent-[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Node Score Id",
+      "type": "string"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/NodeScore"
+      },
+      "title": "Nodes",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scorer_id": {
+      "maxLength": 160,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9 .,()_-]+$",
+      "title": "Scorer Id",
+      "type": "string"
+    },
+    "scorer_kind": {
+      "$ref": "#/$defs/ScorerKind"
+    },
+    "step": {
+      "maximum": 10000,
+      "minimum": 0,
+      "title": "Step",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "node_score_id",
+    "episode_id",
+    "step",
+    "agent_id",
+    "scorer_id",
+    "scorer_kind"
+  ],
+  "title": "NodeScoreRecord",
+  "type": "object"
+}
